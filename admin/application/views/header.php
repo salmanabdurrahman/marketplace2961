@@ -11,14 +11,14 @@
 <body>
 	<nav class="navbar navbar-expand-lg navbar-dark bg-primary mb-3">
 		<div class="container">
-			<a href="" class="navbar-brand">Admin</a>
+			<a href="<?php echo base_url('/'); ?>" class="navbar-brand">Admin</a>
 			<button class="navbar-toggler" data-bs-toggle="collapse" data-bs-target="#naff">
 				<span class="navbar-toggler-icon"></span>
 			</button>
 			<div class="collapse navbar-collapse" id="naff">
 				<ul class="navbar-nav me-auto">
 					<li class="nav-item">
-						<a href="<?php echo base_url('/'); ?>" class="nav-link">Home</a>
+						<a href="<?php echo base_url('/home'); ?>" class="nav-link">Home</a>
 					</li>
 					<li class="nav-item">
 						<a href="<?php echo base_url('/kategori'); ?>" class="nav-link">Kategori</a>
