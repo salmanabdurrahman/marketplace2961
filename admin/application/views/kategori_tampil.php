@@ -14,7 +14,7 @@
 				<tr>
 					<td><?php echo $k + 1 ?></td>
 					<td><?php echo $v["nama_kategori"]; ?></td>
-					<td><?php echo $v["foto_kategori"] ?></td>
+					<td><?php echo $v["foto_kategori"]; ?></td>
 					<td>
 						<a href="" class="btn btn-warning">Edit</a>
 						<a href="" class="btn btn-danger">Hapus</a>
