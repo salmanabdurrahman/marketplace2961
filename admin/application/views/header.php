@@ -18,19 +18,19 @@
 			<div class="collapse navbar-collapse" id="naff">
 				<ul class="navbar-nav me-auto">
 					<li class="nav-item">
-						<a href="" class="nav-link">Home</a>
+						<a href="<?php echo base_url('/'); ?>" class="nav-link">Home</a>
 					</li>
 					<li class="nav-item">
-						<a href="" class="nav-link">Kategori</a>
+						<a href="<?php echo base_url('/kategori'); ?>" class="nav-link">Kategori</a>
 					</li>
 					<li class="nav-item">
-						<a href="" class="nav-link">Produk</a>
+						<a href="<?php echo base_url('/produk'); ?>" class="nav-link">Produk</a>
 					</li>
 					<li class="nav-item">
-						<a href="" class="nav-link">Member</a>
+						<a href="<?php echo base_url('/member'); ?>" class="nav-link">Member</a>
 					</li>
 					<li class="nav-item">
-						<a href="" class="nav-link">Transaksi</a>
+						<a href="<?php echo base_url('/transaksi'); ?>" class="nav-link">Transaksi</a>
 					</li>
 					<li class="nav-item">
 						<a href="" class="nav-link">Logout</a>
