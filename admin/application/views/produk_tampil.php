@@ -1,6 +1,6 @@
 <div class="container">
     <h5>Data Produk</h5>
-    <table class="table table-bordered">
+    <table class="table table-bordered" id="myTable">
         <thead>
             <tr>
                 <th>No</th>
