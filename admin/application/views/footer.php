@@ -1,5 +1,5 @@
 <footer class="bg-light text-center py-3 mt-5">
-  <div class="">copyright &copy; 2025. Amikom</div>
+  <div>copyright &copy; 2025. Amikom</div>
 </footer>
 <script src="https://code.jquery.com/jquery-3.7.1.js"></script>
 <script src="https://cdn.datatables.net/2.2.2/js/dataTables.js"></script>

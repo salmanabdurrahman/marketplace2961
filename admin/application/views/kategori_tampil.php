@@ -18,7 +18,7 @@ if ($this->session->flashdata("pesan_error")) {
 
 <div class="container">
 	<h5>Data Kategori</h5>
-	<table class="table table-bordered" id="myTable">
+	<table class="table table-bordered table-hover" id="myTable">
 		<thead>
 			<tr>
 				<th>No</th>

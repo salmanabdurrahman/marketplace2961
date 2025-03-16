@@ -1,6 +1,6 @@
 <div class="container">
     <h5>Data Member</h5>
-    <table class="table table-bordered" id="myTable">
+    <table class="table table-bordered table-hover table-hover" id="myTable">
         <thead>
             <tr>
                 <th>No</th>
