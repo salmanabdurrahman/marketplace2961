@@ -9,4 +9,16 @@ class Mtransaksi extends CI_Model
         $d = $q;
         return $d;
     }
+
+    public function detail($id_transaksi)
+    {
+        $this->db->where("id_transaksi", $id_transaksi);
+        return $this->db->get("transaksi")->row_array();
+    }
+
+    public function transaksi_detail($id_transaksi)
+    {
+        $this->db->where("id_transaksi", $id_transaksi);
+        return $this->db->get("transaksi_detail")->result_array();
+    }
 }

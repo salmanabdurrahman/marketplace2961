@@ -18,7 +18,8 @@
                     <td><?php echo $v["total_transaksi"]; ?></td>
                     <td><?php echo $v["status_transaksi"]; ?></td>
                     <td>
-                        <a href="" class="btn btn-info">Detail</a>
+                        <a href="<?php echo base_url('/transaksi/detail/' . $v["id_transaksi"]); ?>"
+                            class="btn btn-info">Detail</a>
                     </td>
                 </tr>
             <?php endforeach; ?>
