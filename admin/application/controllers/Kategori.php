@@ -8,13 +8,17 @@ class Kategori extends CI_Controller
 		parent::__construct();
 		$this->load->helper("url");
 		$this->load->model("Mkategori");
+
+		if (!isset($_SESSION["id_admin"])) {
+			$this->session->set_flashdata("pesan_error", "Silahkan login terlebih dahulu");
+			redirect("login");
+		}
 	}
 
 	public function index()
 	{
 		$data["kategori"] = $this->Mkategori->tampil();
 		$this->load->view("layout/header");
-		;
 		$this->load->view("kategori/kategori_tampil", $data);
 		$this->load->view("layout/footer");
 	}
@@ -30,7 +34,6 @@ class Kategori extends CI_Controller
 		}
 
 		$this->load->view("layout/header");
-		;
 		$this->load->view("kategori/kategori_tambah");
 		$this->load->view("layout/footer");
 	}
@@ -47,7 +50,6 @@ class Kategori extends CI_Controller
 
 		$data["kategori"] = $this->Mkategori->detail($id_kategori);
 		$this->load->view("layout/header");
-		;
 		$this->load->view("kategori/kategori_edit", $data);
 		$this->load->view("layout/footer");
 	}

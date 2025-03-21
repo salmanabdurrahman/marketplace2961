@@ -32,9 +32,22 @@
 					<li class="nav-item">
 						<a href="<?php echo base_url('/transaksi'); ?>" class="nav-link">Transaksi</a>
 					</li>
-					<li class="nav-item">
-						<a href="" class="nav-link">Logout</a>
-					</li>
+					<?php if (isset($_SESSION["id_admin"])) { ?>
+						<li class="nav-item dropdown">
+							<a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown"
+								aria-expanded="false">
+								<?php echo $_SESSION["nama"]; ?>
+							</a>
+							<ul class="dropdown-menu">
+								<li><a class="dropdown-item" href="#">Profile</a></li>
+								<li><a class="dropdown-item" href="<?php echo base_url('logout'); ?>">Logout</a></li>
+							</ul>
+						</li>
+					<?php } else { ?>
+						<li class="nav-item">
+							<a href="<?php echo base_url('/login'); ?>" class="nav-link">Login</a>
+						</li>
+					<?php } ?>
 				</ul>
 			</div>
 		</div>

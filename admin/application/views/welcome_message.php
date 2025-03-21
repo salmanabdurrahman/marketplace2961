@@ -1,3 +1,13 @@
+<?php
+if ($this->session->flashdata("pesan_sukses")) {
+	echo "
+    <div class='alert alert-success container' role='alert'>
+        " . $this->session->flashdata("pesan_sukses") . "
+    </div>
+    ";
+}
+?>
+
 <div class="container">
 	<div class="px-4 py-5 my-5 text-center">
 		<img class="d-block mx-auto mb-4" src="https://getbootstrap.com/docs/5.3/assets/brand/bootstrap-logo.svg" alt=""
