@@ -13,8 +13,9 @@ class Member extends CI_Controller
     public function index()
     {
         $data["member"] = $this->Mmember->tampil();
-        $this->load->view("header");
-        $this->load->view("member_tampil", $data);
-        $this->load->view("footer");
+        $this->load->view("layout/header");
+        ;
+        $this->load->view("member/member_tampil", $data);
+        $this->load->view("layout/footer");
     }
 }

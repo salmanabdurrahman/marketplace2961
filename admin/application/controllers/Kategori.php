@@ -13,9 +13,10 @@ class Kategori extends CI_Controller
 	public function index()
 	{
 		$data["kategori"] = $this->Mkategori->tampil();
-		$this->load->view("header");
-		$this->load->view("kategori_tampil", $data);
-		$this->load->view("footer");
+		$this->load->view("layout/header");
+		;
+		$this->load->view("kategori/kategori_tampil", $data);
+		$this->load->view("layout/footer");
 	}
 
 	public function tambah()
@@ -28,9 +29,10 @@ class Kategori extends CI_Controller
 			redirect("kategori");
 		}
 
-		$this->load->view("header");
-		$this->load->view("kategori_tambah");
-		$this->load->view("footer");
+		$this->load->view("layout/header");
+		;
+		$this->load->view("kategori/kategori_tambah");
+		$this->load->view("layout/footer");
 	}
 
 	public function edit($id_kategori)
@@ -44,9 +46,10 @@ class Kategori extends CI_Controller
 		}
 
 		$data["kategori"] = $this->Mkategori->detail($id_kategori);
-		$this->load->view("header");
-		$this->load->view("kategori_edit", $data);
-		$this->load->view("footer");
+		$this->load->view("layout/header");
+		;
+		$this->load->view("kategori/kategori_edit", $data);
+		$this->load->view("layout/footer");
 	}
 
 	public function hapus($id_kategori)
