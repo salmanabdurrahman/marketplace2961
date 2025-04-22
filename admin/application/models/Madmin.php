@@ -38,4 +38,23 @@ class Madmin extends CI_Model
         $this->session->unset_userdata("username");
         $this->session->unset_userdata("nama");
     }
+
+    public function ubah($input, $id_admin)
+    {
+        if (!empty($input["password"])) {
+            $input["password"] = sha1($input["password"]);
+        } else {
+            unset($input["password"]);
+        }
+
+        $this->db->where("id_admin", $id_admin);
+        $this->db->update("admin", $input);
+
+        $this->session->set_userdata("id_admin", $id_admin);
+        $this->session->set_userdata("username", $input["username"]);
+        $this->session->set_userdata("nama", $input["nama"]);
+
+        $this->session->set_flashdata("pesan_sukses", "Anda berhasil mengubah data akun");
+        redirect("/");
+    }
 }

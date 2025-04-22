@@ -39,7 +39,7 @@
 								<?php echo $_SESSION["nama"]; ?>
 							</a>
 							<ul class="dropdown-menu">
-								<li><a class="dropdown-item" href="#">Profile</a></li>
+								<li><a class="dropdown-item" href="<?php echo base_url('/akun'); ?>">Profile</a></li>
 								<li><a class="dropdown-item" href="<?php echo base_url('logout'); ?>">Logout</a></li>
 							</ul>
 						</li>
