@@ -13,16 +13,6 @@ class Mkategori extends CI_Model
 
 	public function simpan($input)
 	{
-		if (empty($input["nama_kategori"])) {
-			$this->session->set_flashdata("pesan_error", "Nama kategori harus diisi.");
-			redirect("kategori/tambah");
-		}
-
-		if (empty($_FILES["foto_kategori"]["name"])) {
-			$this->session->set_flashdata("pesan_error", "Foto kategori harus diisi.");
-			redirect("kategori/tambah");
-		}
-
 		$config["upload_path"] = "./assets/kategori/";
 		$config["allowed_types"] = "jpg|png|jpeg|gif|svg";
 		$config["max_size"] = "2048";
@@ -50,16 +40,6 @@ class Mkategori extends CI_Model
 
 	public function edit($id_kategori, $input)
 	{
-		if (empty($input["nama_kategori"])) {
-			$this->session->set_flashdata("pesan_error", "Nama kategori harus diisi.");
-			redirect("kategori/edit/$id_kategori");
-		}
-
-		if (empty($_FILES["foto_kategori"]["name"])) {
-			$this->session->set_flashdata("pesan_error", "Foto kategori harus diisi.");
-			redirect("kategori/edit/$id_kategori");
-		}
-
 		$config["upload_path"] = "./assets/kategori/";
 		$config["allowed_types"] = "jpg|png|jpeg|gif|svg";
 		$config["max_size"] = "2048";
@@ -87,11 +67,20 @@ class Mkategori extends CI_Model
 
 	public function hapus($id_kategori)
 	{
+		$detail = $this->detail($id_kategori);
+
+		if (file_exists("./assets/kategori/" . $detail["foto_kategori"])) {
+			unlink("./assets/kategori/" . $detail["foto_kategori"]);
+		}
+
+		$this->db->where("id_kategori", $id_kategori)->delete("kategori");
+
 		if ($this->db->affected_rows() == 0) {
 			$this->session->set_flashdata("pesan_error", "Data kategori gagal dihapus.");
 			redirect("kategori");
 		}
 
-		$this->db->where("id_kategori", $id_kategori)->delete("kategori");
+		$this->session->set_flashdata("pesan_sukses", "Data kategori berhasil dihapus");
+		redirect("kategori");
 	}
 }

@@ -19,7 +19,12 @@ class Akun extends CI_Controller
     {
         $input = $this->input->post();
 
-        if ($input) {
+        $this->form_validation->set_rules("username", "Username", "required");
+        $this->form_validation->set_rules("nama", "Nama", "required");
+
+        $this->form_validation->set_message("required", "%s harus diisi");
+
+        if ($this->form_validation->run() == TRUE) {
             $id_admin = $this->session->userdata("id_admin");
             $this->Madmin->ubah($input, $id_admin);
             $this->session->set_flashdata("pesan_sukses", "Anda berhasil mengubah data akun");

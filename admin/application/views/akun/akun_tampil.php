@@ -24,16 +24,19 @@ if ($this->session->flashdata("pesan_error")) {
                 <div class="form-group mb-3">
                     <label for="username">Username</label>
                     <input type="text" class="form-control" id="username" name="username"
-                        value="<?php echo $this->session->userdata("username"); ?>">
+                        value="<?php echo set_value("username", $this->session->userdata("username")); ?>" autofocus>
+                    <div class="text-danger small"><?php echo form_error("username"); ?></div>
                 </div>
                 <div class="form-group mb-3">
                     <label for="nama">Nama Lengkap</label>
                     <input type="text" class="form-control" id="nama" name="nama"
-                        value="<?php echo $this->session->userdata("nama"); ?>">
+                        value="<?php echo set_value("nama", $this->session->userdata("nama")); ?>">
+                    <div class="text-danger small"><?php echo form_error("nama"); ?></div>
                 </div>
                 <div class="form-group mb-3">
                     <label for="password">Password</label>
                     <input type="password" class="form-control" id="password" name="password">
+                    <div class="text-danger small"><?php echo form_error("password"); ?></div>
                     <p class="text-muted">*Biarkan kosong jika tidak ingin mengubah password</p>
                 </div>
                 <button type=" submit" class="btn btn-primary">Ubah</button>

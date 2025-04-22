@@ -5,16 +5,6 @@ class Madmin extends CI_Model
 {
     public function login($input)
     {
-        if (empty($input["username"])) {
-            $this->session->set_flashdata("pesan_error", "Username harus diisi.");
-            redirect("login");
-        }
-
-        if (empty($input["password"])) {
-            $this->session->set_flashdata("pesan_error", "Password harus diisi.");
-            redirect("login");
-        }
-
         $this->db->where("username", $input["username"]);
         $this->db->where("password", sha1($input["password"]));
         $result = $this->db->get("admin")->row_array();

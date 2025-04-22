@@ -15,7 +15,8 @@ if ($this->session->flashdata("pesan_error")) {
         <div class="form-group mb-3">
             <label>Nama Kategori</label>
             <input type="text" name="nama_kategori" class="form-control"
-                value="<?php echo $kategori["nama_kategori"]; ?>" autofocus>
+                value="<?php echo set_value("nama_kategori", $kategori["nama_kategori"]); ?>" autofocus>
+            <div class="text-danger small"><?php echo form_error("nama_kategori"); ?></div>
         </div>
         <div class="mb-1">
             <label>Foto Lama</label>

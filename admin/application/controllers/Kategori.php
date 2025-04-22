@@ -27,7 +27,11 @@ class Kategori extends CI_Controller
 	{
 		$input = $this->input->post();
 
-		if ($input) {
+		$this->form_validation->set_rules("nama_kategori", "Nama kategori", "required");
+
+		$this->form_validation->set_message("required", "%s harus diisi");
+
+		if ($this->form_validation->run() == TRUE) {
 			$this->Mkategori->simpan($input);
 			$this->session->set_flashdata("pesan_sukses", "Data kategori berhasil disimpan");
 			redirect("kategori");
@@ -42,7 +46,11 @@ class Kategori extends CI_Controller
 	{
 		$input = $this->input->post();
 
-		if ($input) {
+		$this->form_validation->set_rules("nama_kategori", "Nama kategori", "required");
+
+		$this->form_validation->set_message("required", "%s harus diisi");
+
+		if ($this->form_validation->run() == TRUE) {
 			$this->Mkategori->edit($id_kategori, $input);
 			$this->session->set_flashdata("pesan_sukses", "Data kategori berhasil diubah");
 			redirect("kategori");
