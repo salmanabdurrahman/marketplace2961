@@ -21,4 +21,16 @@ class Mtransaksi extends CI_Model
         $this->db->where("id_transaksi", $id_transaksi);
         return $this->db->get("transaksi_detail")->result_array();
     }
+
+    public function transaksi_member_jual($id_member)
+    {
+        $this->db->where("id_member_jual", $id_member);
+        return $this->db->get("transaksi")->result_array();
+    }
+
+    public function transaksi_member_beli($id_member)
+    {
+        $this->db->where("id_member_beli", $id_member);
+        return $this->db->get("transaksi")->result_array();
+    }
 }

@@ -20,7 +20,8 @@
                     <td><?php echo $v["nama_distrik_member"]; ?></td>
                     <td><?php echo $v["wa_member"]; ?></td>
                     <td>
-                        <a href="" class="btn btn-info">Detail</a>
+                        <a href="<?php echo base_url('/member/detail/' . $v["id_member"]); ?>"
+                            class="btn btn-info">Detail</a>
                     </td>
                 </tr>
             <?php endforeach; ?>
