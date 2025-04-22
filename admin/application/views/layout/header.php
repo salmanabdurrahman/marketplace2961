@@ -17,7 +17,7 @@
 				<span class="navbar-toggler-icon"></span>
 			</button>
 			<div class="collapse navbar-collapse" id="naff">
-				<ul class="navbar-nav ms-auto">
+				<ul class="navbar-nav me-auto">
 					<li class="nav-item">
 						<a href="<?php echo base_url('/home'); ?>" class="nav-link">Home</a>
 					</li>
@@ -33,6 +33,8 @@
 					<li class="nav-item">
 						<a href="<?php echo base_url('/transaksi'); ?>" class="nav-link">Transaksi</a>
 					</li>
+				</ul>
+				<ul class="navbar-nav ms-auto">
 					<?php if (isset($_SESSION["id_admin"])) { ?>
 						<li class="nav-item dropdown">
 							<a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown"
