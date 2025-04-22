@@ -1,21 +1,3 @@
-<?php
-if ($this->session->flashdata("pesan_sukses")) {
-    echo "
-    <div class='alert alert-success container' role='alert'>
-        " . $this->session->flashdata("pesan_sukses") . "
-    </div>
-    ";
-}
-
-if ($this->session->flashdata("pesan_error")) {
-    echo "
-    <div class='alert alert-danger container' role='alert'>
-        " . $this->session->flashdata("pesan_error") . "
-    </div>
-    ";
-}
-?>
-
 <div class="container mt-5">
     <div class="row">
         <div class="col-4 md-4 mt-5 offset-md-4 bg-white shadow p-5">

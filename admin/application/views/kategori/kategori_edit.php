@@ -1,13 +1,3 @@
-<?php
-if ($this->session->flashdata("pesan_error")) {
-    echo "
-    <div class='alert alert-danger container' role='alert'>
-        " . $this->session->flashdata("pesan_error") . "
-    </div>
-    ";
-}
-?>
-
 <div class="container">
     <h5>Edit Data Kategori</h5>
     <form action="<?php echo base_url('/kategori/edit/' . $kategori["id_kategori"]); ?>" method="POST"

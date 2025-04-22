@@ -1,13 +1,3 @@
-<?php
-if ($this->session->flashdata("pesan_error")) {
-    echo "
-    <div class='alert alert-danger container' role='alert'>
-        " . $this->session->flashdata("pesan_error") . "
-    </div>
-    ";
-}
-?>
-
 <div class="container">
     <h5>Tambah Data Kategori</h5>
     <form action="<?php echo base_url('/kategori/tambah'); ?>" method="POST" enctype="multipart/form-data">
