@@ -20,7 +20,7 @@ class Mproduk extends CI_Model
 
     public function simpan($input)
     {
-        $config["upload_path"] = "./assets/produk/";
+        $config["upload_path"] = $this->config->item("assets_produk");
         $config["allowed_types"] = "jpg|png|jpeg|gif|svg";
         $config["max_size"] = "2048";
 
@@ -51,7 +51,7 @@ class Mproduk extends CI_Model
 
     public function edit($id_produk, $input)
     {
-        $config["upload_path"] = "./assets/produk/";
+        $config["upload_path"] = $this->config->item("assets_produk");
         $config["allowed_types"] = "jpg|png|jpeg|gif|svg";
         $config["max_size"] = "2048";
 
@@ -61,8 +61,8 @@ class Mproduk extends CI_Model
         if ($this->upload->do_upload("foto_produk")) {
             $detail = $this->detail($id_produk);
 
-            if (file_exists("./assets/produk/" . $detail["foto_produk"])) {
-                unlink("./assets/produk/" . $detail["foto_produk"]);
+            if (file_exists($this->config->item("assets_produk") . $detail["foto_produk"])) {
+                unlink($this->config->item("assets_produk") . $detail["foto_produk"]);
             }
 
             $input["foto_produk"] = $this->upload->data("file_name");
@@ -77,8 +77,8 @@ class Mproduk extends CI_Model
     {
         $detail = $this->detail($id_produk);
 
-        if (file_exists("./assets/produk/" . $detail["foto_produk"])) {
-            unlink("./assets/produk/" . $detail["foto_produk"]);
+        if (file_exists($this->config->item("assets_produk") . $detail["foto_produk"])) {
+            unlink($this->config->item("assets_produk") . $detail["foto_produk"]);
         }
 
         $this->db->where("id_produk", $id_produk)->delete("produk");

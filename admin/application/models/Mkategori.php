@@ -13,7 +13,7 @@ class Mkategori extends CI_Model
 
 	public function simpan($input)
 	{
-		$config["upload_path"] = "./assets/kategori/";
+		$config["upload_path"] = $this->config->item("assets_kategori");
 		$config["allowed_types"] = "jpg|png|jpeg|gif|svg";
 		$config["max_size"] = "2048";
 
@@ -40,7 +40,7 @@ class Mkategori extends CI_Model
 
 	public function edit($id_kategori, $input)
 	{
-		$config["upload_path"] = "./assets/kategori/";
+		$config["upload_path"] = $this->config->item("assets_kategori");
 		$config["allowed_types"] = "jpg|png|jpeg|gif|svg";
 		$config["max_size"] = "2048";
 
@@ -50,8 +50,8 @@ class Mkategori extends CI_Model
 		if ($this->upload->do_upload("foto_kategori")) {
 			$detail = $this->detail($id_kategori);
 
-			if (file_exists("./assets/kategori/" . $detail["foto_kategori"])) {
-				unlink("./assets/kategori/" . $detail["foto_kategori"]);
+			if (file_exists($this->config->item("assets_kategori") . $detail["foto_kategori"])) {
+				unlink($this->config->item("assets_kategori") . $detail["foto_kategori"]);
 			}
 
 			$input["foto_kategori"] = $this->upload->data("file_name");
@@ -69,8 +69,8 @@ class Mkategori extends CI_Model
 	{
 		$detail = $this->detail($id_kategori);
 
-		if (file_exists("./assets/kategori/" . $detail["foto_kategori"])) {
-			unlink("./assets/kategori/" . $detail["foto_kategori"]);
+		if (file_exists($this->config->item("assets_kategori") . $detail["foto_kategori"])) {
+			unlink($this->config->item("assets_kategori") . $detail["foto_kategori"]);
 		}
 
 		$this->db->where("id_kategori", $id_kategori)->delete("kategori");

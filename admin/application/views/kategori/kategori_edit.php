@@ -10,7 +10,7 @@
         </div>
         <div class="mb-1">
             <label>Foto Lama</label>
-            <img src="<?php echo base_url("assets/kategori/" . urlencode($kategori["foto_kategori"])); ?>"
+            <img src="<?php echo $this->config->item("url_kategori") . $kategori["foto_kategori"]; ?>"
                 alt="<?php echo $kategori["nama_kategori"]; ?>" class="d-block" width="300">
         </div>
         <div class="form-group mb-3">

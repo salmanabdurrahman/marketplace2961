@@ -16,7 +16,7 @@
                     <td><?php echo $k + 1 ?></td>
                     <td><?php echo $v["nama_produk"]; ?></td>
                     <td><?php echo number_format($v["harga_produk"], 0, ',', '.') ?></td>
-                    <td><img src="<?php echo base_url("assets/produk/" . urlencode($v["foto_produk"])); ?>"
+                    <td><img src="<?php echo $this->config->item("url_produk") . $v["foto_produk"]; ?>"
                             alt="<?php echo $v["nama_produk"]; ?>" width="200" loading="lazy"></td>
                     <td>
                         <a href="" class="btn btn-info">Detail</a>

@@ -16,7 +16,7 @@
         </div>
         <div class="mb-1">
             <label>Foto Lama</label>
-            <img src="<?php echo base_url("assets/produk/" . urlencode($produk["foto_produk"])); ?>"
+            <img src="<?php echo $this->config->item("url_produk") . $produk["foto_produk"]; ?>"
                 alt="<?php echo $produk["nama_produk"]; ?>" class="d-block" width="300">
         </div>
         <div class="form-group mb-3">

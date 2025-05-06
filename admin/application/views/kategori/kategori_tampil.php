@@ -14,7 +14,7 @@
 				<tr>
 					<td><?php echo $k + 1 ?></td>
 					<td><?php echo $v["nama_kategori"]; ?></td>
-					<td><img src="<?php echo base_url("assets/kategori/" . urlencode($v["foto_kategori"])); ?>"
+					<td><img src="<?php echo $this->config->item("url_kategori") . $v["foto_kategori"]; ?>"
 							alt="<?php echo $v["nama_kategori"]; ?>" class="d-block" width="200">
 					</td>
 					<td>
