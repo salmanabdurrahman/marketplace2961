@@ -18,7 +18,7 @@
                     <td><?php echo number_format($v["harga_produk"], 0, ',', '.') ?></td>
                     <td>
                         <img src="<?php echo base_url("assets/produk/" . urlencode($v["foto_produk"])); ?>"
-                            alt="<?php echo $v["nama_produk"]; ?>" loading="lazy">
+                            alt="<?php echo $v["nama_produk"]; ?>" class="d-block" width="200" loading="lazy">
                     </td>
                     <td>
                         <a href="<?php echo base_url('/seller/produk/edit/' . $v["id_produk"]); ?>"
@@ -30,5 +30,5 @@
             <?php endforeach; ?>
         </tbody>
     </table>
-    <a href="" class="btn btn-primary">Tambah Data</a>
+    <a href="<?php echo base_url('/seller/produk/tambah'); ?>" class="btn btn-primary">Tambah Data</a>
 </div>

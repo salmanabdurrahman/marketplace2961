@@ -17,7 +17,8 @@ class Produk extends CI_Controller
 
     public function index()
     {
-        $data["produk"] = $this->Mproduk->tampil();
+        $id_member = $this->session->userdata("id_member");
+        $data["produk"] = $this->Mproduk->produk_member($id_member);
         $this->load->view("layout/header");
         $this->load->view("produk/produk_tampil", $data);
         $this->load->view("layout/footer");
