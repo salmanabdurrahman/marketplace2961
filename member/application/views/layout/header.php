@@ -10,7 +10,7 @@
 </head>
 
 <body>
-	<nav class="navbar navbar-expand-lg navbar-dark bg-primary mb-3">
+	<nav class="navbar navbar-expand-lg navbar-dark bg-primary">
 		<div class="container">
 			<a href="<?php echo base_url('/'); ?>" class="navbar-brand fw-semibold fs-4">Member</a>
 			<button class="navbar-toggler" data-bs-toggle="collapse" data-bs-target="#naff">
@@ -20,7 +20,7 @@
 				<?php if (isset($_SESSION["id_member"])) { ?>
 					<ul class="navbar-nav me-auto">
 						<li class="nav-item">
-							<a href="<?php echo base_url('/home'); ?>" class="nav-link">Home</a>
+							<a href="<?php echo base_url('/'); ?>" class="nav-link">Home</a>
 						</li>
 						<li class="nav-item">
 							<a href="<?php echo base_url('/kategori'); ?>" class="nav-link">Kategori</a>
@@ -28,9 +28,9 @@
 						<li class="nav-item">
 							<a href="<?php echo base_url('/produk'); ?>" class="nav-link">Produk</a>
 						</li>
-						<li class="nav-item">
+						<!-- <li class="nav-item">
 							<a href="<?php echo base_url('/transaksi'); ?>" class="nav-link">Transaksi</a>
-						</li>
+						</li> -->
 					</ul>
 				<?php } ?>
 				<ul class="navbar-nav ms-auto">
@@ -38,12 +38,15 @@
 						<li class="nav-item dropdown">
 							<a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown"
 								aria-expanded="false">
-								Penjualan
+								Seller
 							</a>
 							<ul class="dropdown-menu">
 								<li><a class="dropdown-item" href="<?php echo base_url('/seller/produk'); ?>">Produk
 										Saya</a></li>
 								<li><a class="dropdown-item" href="<?php echo base_url('/seller/transaksi'); ?>">Transaksi
+										Saya</a>
+								</li>
+								<li><a class="dropdown-item" href="<?php echo base_url('/transaksi'); ?>">Pembelian
 										Saya</a>
 								</li>
 							</ul>
@@ -60,7 +63,7 @@
 						</li>
 					<?php } else { ?>
 						<li class="nav-item">
-							<a href="<?php echo base_url('/login'); ?>" class="nav-link">Login</a>
+							<button data-bs-toggle="modal" data-bs-target="#loginModal" class="nav-link">Login</button>
 						</li>
 					<?php } ?>
 				</ul>

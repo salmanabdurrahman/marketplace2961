@@ -5,8 +5,17 @@ class Mproduk extends CI_Model
 {
     public function tampil()
     {
+        $this->db->order_by("id_produk", "DESC");
         $q = $this->db->get("produk")->result_array();
         $d = $q;
+        return $d;
+    }
+
+    public function tampil_produk_terbaru()
+    {
+        $this->db->order_by("id_produk", "DESC");
+        $q = $this->db->get("produk", 4, 0);
+        $d = $q->result_array();
         return $d;
     }
 

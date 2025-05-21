@@ -18,6 +18,6 @@ class Logout extends CI_Controller
     {
         $this->Mmember->logout();
         $this->session->set_flashdata("pesan_sukses", "Anda berhasil logout");
-        redirect("login");
+        redirect("/");
     }
 }
