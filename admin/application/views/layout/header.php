@@ -23,6 +23,12 @@
 							<a href="<?php echo base_url('/home'); ?>" class="nav-link">Home</a>
 						</li>
 						<li class="nav-item">
+							<a href="<?php echo base_url('/slider'); ?>" class="nav-link">Slider</a>
+						</li>
+						<li class="nav-item">
+							<a href="<?php echo base_url('/artikel'); ?>" class="nav-link">Artikel</a>
+						</li>
+						<li class="nav-item">
 							<a href="<?php echo base_url('/kategori'); ?>" class="nav-link">Kategori</a>
 						</li>
 						<li class="nav-item">

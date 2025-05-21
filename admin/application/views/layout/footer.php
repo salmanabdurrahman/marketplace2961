@@ -9,8 +9,12 @@
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <!-- Bootstrap -->
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+<!-- CK Editor -->
+<script src="https://cdn.ckeditor.com/4.22.1/standard/ckeditor.js"></script>
 <script>
     new DataTable('#myTable');
+
+    CKEDITOR.replace('myEditor');
 </script>
 <?php
 if ($this->session->flashdata("pesan_sukses")) {
