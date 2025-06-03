@@ -22,6 +22,13 @@ class Mmember extends CI_Model
         return $query->result_array();
     }
 
+    public function register($input)
+    {
+        $this->db->insert("member", $input);
+        $this->session->set_flashdata("pesan_sukses", "Registrasi berhasil. Silakan login");
+        redirect("login");
+    }
+
     public function login($input)
     {
         $this->db->where("email_member", $input["email_member"]);

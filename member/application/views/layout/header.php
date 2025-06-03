@@ -65,6 +65,9 @@
 						<li class="nav-item">
 							<button data-bs-toggle="modal" data-bs-target="#loginModal" class="nav-link">Login</button>
 						</li>
+						<li class="nav-item">
+							<a href="<?php echo base_url('/register'); ?>" class="nav-link">Register</a>
+						</li>
 					<?php } ?>
 				</ul>
 			</div>
