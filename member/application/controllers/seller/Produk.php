@@ -31,6 +31,7 @@ class Produk extends CI_Controller
 
         $this->form_validation->set_rules("nama_produk", "Nama produk", "required");
         $this->form_validation->set_rules("harga_produk", "Harga produk", "required");
+        $this->form_validation->set_rules("berat_produk", "Berat produk", "required");
         $this->form_validation->set_rules("deskripsi_produk", "Deskripsi produk", "required");
         $this->form_validation->set_rules("id_kategori", "Kategori produk", "required");
 
@@ -54,6 +55,7 @@ class Produk extends CI_Controller
 
         $this->form_validation->set_rules("nama_produk", "Nama produk", "required");
         $this->form_validation->set_rules("harga_produk", "Harga produk", "required");
+        $this->form_validation->set_rules("berat_produk", "Berat produk", "required");
         $this->form_validation->set_rules("deskripsi_produk", "Deskripsi produk", "required");
         $this->form_validation->set_rules("id_kategori", "Kategori produk", "required");
 

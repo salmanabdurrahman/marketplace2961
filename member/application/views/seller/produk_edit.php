@@ -14,6 +14,12 @@
                 value="<?php echo set_value("harga_produk", $produk["harga_produk"]); ?>">
             <div class="text-danger small"><?php echo form_error("harga_produk"); ?></div>
         </div>
+        <div class="form-group mb-3">
+            <label>Berat Produk (gr)</label>
+            <input type="number" name="berat_produk" class="form-control"
+                value="<?php echo set_value("berat_produk", $produk["berat_produk"]); ?>">
+            <div class="text-danger small"><?php echo form_error("berat_produk"); ?></div>
+        </div>
         <div class="mb-1">
             <label>Foto Lama</label>
             <img src="<?php echo $this->config->item("url_produk") . $produk["foto_produk"]; ?>"

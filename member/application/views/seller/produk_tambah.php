@@ -14,6 +14,12 @@
             <div class="text-danger small"><?php echo form_error("harga_produk"); ?></div>
         </div>
         <div class="form-group mb-3">
+            <label>Berat Produk (gr)</label>
+            <input type="number" name="berat_produk" class="form-control"
+                value="<?php echo set_value("berat_produk"); ?>">
+            <div class="text-danger small"><?php echo form_error("berat_produk"); ?></div>
+        </div>
+        <div class="form-group mb-3">
             <label>Foto Produk</label>
             <input type="file" name="foto_produk" class="form-control">
         </div>
