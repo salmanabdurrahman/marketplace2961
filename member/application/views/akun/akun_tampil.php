@@ -28,22 +28,40 @@
                         value="<?php echo set_value("wa_member", $this->session->userdata("wa_member")); ?>">
                     <div class="text-danger small"><?php echo form_error("wa_membee"); ?></div>
                 </div>
-                <div class="form-group mb-3">
+                <!-- <div class="form-group mb-3">
                     <label for="nama_distrik_member">Kota/Kabupaten</label>
                     <input type="text" class="form-control" id="nama_distrik_member" name="nama_distrik_member"
                         value="<?php echo set_value("nama_distrik_member", $this->session->userdata("nama_distrik_member")); ?>">
                     <div class="text-danger small"><?php echo form_error("nama_distrik_member"); ?></div>
+                </div> -->
+                <div class="form-group mb-3">
+                    <label for="kode_distrik_member">Kota/Kabupaten</label>
+                    <select name="kode_distrik_member" id="kode_distrik_member" class="form-select">
+                        <option value="" disabled selected>Pilih Kota/Kabupaten</option>
+                        <?php
+                        $selected_city_id = set_value("kode_distrik_member", $this->session->userdata("kode_distrik_member"));
+                        foreach ($distrik as $key => $value):
+                            $is_selected = ($selected_city_id == $value["city_id"]) ? 'selected' : '';
+                            ?>
+                            <option value="<?php echo $value["city_id"]; ?>" <?php echo $is_selected; ?>>
+                                <?php echo $value["city_name"]; ?> (<?php echo $value["type"]; ?>)
+                                <?php echo $value["province"]; ?>
+                            </option>
+                        <?php endforeach; ?>
+                    </select>
+                    <div class="text-danger small"><?php echo form_error("kode_distrik_member"); ?></div>
                 </div>
                 <div class="form-group mb-3">
                     <label for="kode_distrik_member">Kode Kota/Kabupaten</label>
                     <input type="text" class="form-control" id="kode_distrik_member" name="kode_distrik_member"
-                        value="<?php echo set_value("kode_distrik_member", $this->session->userdata("kode_distrik_member")); ?>">
+                        value="<?php echo set_value("kode_distrik_member", $this->session->userdata("kode_distrik_member")); ?>"
+                        disabled>
                     <div class="text-danger small"><?php echo form_error("kode_distrik_member"); ?></div>
                 </div>
                 <div class="form-group mb-3">
-                    <label for="password">Password</label>
-                    <input type="password" class="form-control" id="password" name="password">
-                    <div class="text-danger small"><?php echo form_error("password"); ?></div>
+                    <label for="password_member">Password</label>
+                    <input type="password" class="form-control" id="password_member" name="password_member">
+                    <div class="text-danger small"><?php echo form_error("password_member"); ?></div>
                     <p class="text-muted">*Biarkan kosong jika tidak ingin mengubah password</p>
                 </div>
                 <button type=" submit" class="btn btn-primary">Ubah</button>

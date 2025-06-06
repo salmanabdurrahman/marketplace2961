@@ -37,7 +37,7 @@ class Mmember extends CI_Model
 
         if (!$result) {
             $this->session->set_flashdata("pesan_error", "Email atau password salah.");
-            redirect("login");
+            redirect("/");
         }
 
         $this->session->set_userdata("id_member", $result["id_member"]);
@@ -65,10 +65,10 @@ class Mmember extends CI_Model
 
     public function ubah($input, $id_member)
     {
-        if (!empty($input["password"])) {
-            $input["password"] = sha1($input["password"]);
+        if (!empty($input["password_member"])) {
+            $input["password_member"] = sha1($input["password_member"]);
         } else {
-            unset($input["password"]);
+            unset($input["password_member"]);
         }
 
         $this->db->where("id_member", $id_member);
