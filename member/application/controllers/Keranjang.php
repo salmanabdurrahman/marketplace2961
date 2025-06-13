@@ -24,4 +24,11 @@ class Keranjang extends CI_Controller
         $this->load->view("keranjang/keranjang_tampil", $data);
         $this->load->view("layout/footer");
     }
+
+    public function hapus($id_keranjang): void
+    {
+        $this->Mkeranjang->hapus($id_keranjang);
+        $this->session->set_flashdata("pesan_sukses", "Produk berhasil dihapus dari keranjang");
+        redirect("keranjang");
+    }
 }

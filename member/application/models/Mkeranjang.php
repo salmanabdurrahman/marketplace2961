@@ -57,4 +57,11 @@ class Mkeranjang extends CI_Model
 
         return $data;
     }
+
+    public function hapus($id_keranjang)
+    {
+        $this->db->where("id_keranjang", $id_keranjang);
+        $this->db->where("id_member_beli", $this->session->userdata("id_member"));
+        $this->db->delete("keranjang");
+    }
 }

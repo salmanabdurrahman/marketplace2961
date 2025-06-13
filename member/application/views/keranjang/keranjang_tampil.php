@@ -24,7 +24,8 @@
                             <td><?php echo $value['jumlah']; ?></td>
                             <td>
                                 <a href="<?php echo site_url("keranjang/hapus/" . $value['id_keranjang']); ?>"
-                                    class="btn btn-danger btn-sm">Hapus</a>
+                                    class="btn btn-danger btn-sm"
+                                    onclick="return confirm('Apakah Anda yakin ingin menghapus produk ini?');">Hapus</a>
                             </td>
                         </tr>
                     <?php endforeach ?>
