@@ -28,6 +28,9 @@
 						<li class="nav-item">
 							<a href="<?php echo base_url('/produk'); ?>" class="nav-link">Produk</a>
 						</li>
+						<li class="nav-item">
+							<a href="<?php echo base_url('/keranjang'); ?>" class="nav-link">Keranjang</a>
+						</li>
 						<!-- <li class="nav-item">
 							<a href="<?php echo base_url('/transaksi'); ?>" class="nav-link">Transaksi</a>
 						</li> -->

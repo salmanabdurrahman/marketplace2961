@@ -31,4 +31,30 @@ class Mkeranjang extends CI_Model
         $this->session->set_flashdata("pesan_sukses", "Anda berhasil menambahkan produk ke keranjang");
         redirect("/");
     }
+
+    public function tampil($id_member)
+    {
+        $this->db->select('member.id_member, member.id_member as id_member_jual, member.nama_member');
+        $this->db->where("id_member_beli", $id_member);
+        $this->db->join('member', 'keranjang.id_member_jual = member.id_member');
+        $this->db->group_by('member.id_member');
+        $q = $this->db->get("keranjang")->result_array();
+
+        $data = [];
+        foreach ($q as $key => $value) {
+            $this->db->where("id_member_beli", $id_member);
+            $this->db->where("id_member_jual", $value['id_member_jual']);
+            $this->db->join('produk', 'keranjang.id_produk = produk.id_produk');
+            $q[$key]['produk'] = $this->db->get("keranjang")->result_array();
+
+            $data[] = $q[$key];
+        }
+
+        if (empty($data)) {
+            $this->session->set_flashdata("pesan_error", "Keranjang Anda kosong");
+            redirect("/");
+        }
+
+        return $data;
+    }
 }
