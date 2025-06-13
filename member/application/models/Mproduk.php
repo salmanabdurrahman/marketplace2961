@@ -58,6 +58,15 @@ class Mproduk extends CI_Model
         return $d;
     }
 
+    public function detail_umum($id_produk)
+    {
+        $this->db->where("id_produk", $id_produk);
+        $this->db->join('kategori', 'produk.id_kategori = kategori.id_kategori', 'left');
+        $q = $this->db->get("produk")->row_array();
+        $d = $q;
+        return $d;
+    }
+
     public function edit($id_produk, $input)
     {
         $config["upload_path"] = $this->config->item("assets_produk");
