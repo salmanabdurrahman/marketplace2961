@@ -54,9 +54,14 @@
                 <form method="POST" action="">
                     <select name="ongkir" id="ongkir" class="form-select mb-2">
                         <option value="">Pilih Jasa Pengiriman</option>
-                        <option value="jne">JNE</option>
-                        <option value="pos">POS Indonesia</option>
-                        <option value="tiki">TIKI</option>
+                        <?php foreach ($biaya[0]['costs'] as $key => $value): ?>
+                            <option value="<?php echo $key; ?>">
+                                <?php echo $value['description'] ?>
+                                - <?php echo number_format($value['cost'][0]['value'], 0, ',', '.'); ?>
+                                (<?php echo $value['service']; ?>)
+                                - Estimasi <?php echo $value['cost'][0]['etd']; ?> hari
+                            </option>
+                        <?php endforeach; ?>
                     </select>
                     <button type="submit" class="btn btn-primary mt-2">Checkout</button>
                 </form>

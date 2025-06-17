@@ -10,6 +10,7 @@ class Keranjang extends CI_Controller
         $this->load->model("Mkeranjang");
         $this->load->model("Mproduk");
         $this->load->model("Mmember");
+        $this->load->model("Mongkir");
 
         if (!isset($_SESSION["id_member"])) {
             $this->session->set_flashdata("pesan_error", "Silahkan login terlebih dahulu");
@@ -43,6 +44,17 @@ class Keranjang extends CI_Controller
             $this->session->set_flashdata("pesan_error", "Keranjang Anda kosong");
             redirect("keranjang");
         }
+
+        if (empty($data["member_jual"]) || empty($data["member_beli"])) {
+            $this->session->set_flashdata("pesan_error", "Data member tidak ditemukan");
+            redirect("keranjang");
+        }
+
+        $data["biaya"] = $this->Mongkir->cek_biaya_ongkir(
+            $data["member_jual"]["kode_distrik_member"],
+            $data["member_beli"]["kode_distrik_member"],
+            1000
+        );
 
         $this->load->view("layout/header");
         $this->load->view("checkout/checkout_tampil", $data);
