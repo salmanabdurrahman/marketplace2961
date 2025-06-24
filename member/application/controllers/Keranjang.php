@@ -50,11 +50,36 @@ class Keranjang extends CI_Controller
             redirect("keranjang");
         }
 
+        $total_berat = 0;
+        foreach ($data["keranjang"] as $item) {
+            $produk = $this->Mproduk->detail($item["id_produk"]);
+            if ($produk) {
+                $total_berat += $produk["berat_produk"] * $item["jumlah"];
+            }
+        }
+
         $data["biaya"] = $this->Mongkir->cek_biaya_ongkir(
             $data["member_jual"]["kode_distrik_member"],
             $data["member_beli"]["kode_distrik_member"],
-            1000
+            $total_berat
         );
+
+        $this->form_validation->set_rules("ongkir", "Ongkir", "required", [
+            "required" => "Pilih jasa pengiriman terlebih dahulu"
+        ]);
+
+        if ($this->form_validation->run() == TRUE) {
+            $ongkir = $this->input->post("ongkir");
+            $ongkir_terpilih = $data["biaya"][0]["costs"][$ongkir];
+
+            $this->Mkeranjang->checkout(
+                $data["keranjang"],
+                $id_member_jual,
+                $this->session->userdata("id_member"),
+                $data['biaya'][0]['name'],
+                $ongkir_terpilih
+            );
+        }
 
         $this->load->view("layout/header");
         $this->load->view("checkout/checkout_tampil", $data);

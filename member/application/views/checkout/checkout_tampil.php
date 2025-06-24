@@ -52,7 +52,7 @@
             <div class="col-md-4">
                 <h6>Pengiriman</h6>
                 <form method="POST" action="">
-                    <select name="ongkir" id="ongkir" class="form-select mb-2">
+                    <select name="ongkir" id="ongkir" class="form-select mb-2" required>
                         <option value="">Pilih Jasa Pengiriman</option>
                         <?php foreach ($biaya[0]['costs'] as $key => $value): ?>
                             <option value="<?php echo $key; ?>">
@@ -63,6 +63,7 @@
                             </option>
                         <?php endforeach; ?>
                     </select>
+                    <div class="text-danger small"><?php echo form_error("ongkir"); ?></div>
                     <button type="submit" class="btn btn-primary mt-2">Checkout</button>
                 </form>
             </div>

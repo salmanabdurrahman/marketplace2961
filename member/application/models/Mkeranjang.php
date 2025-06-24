@@ -3,6 +3,12 @@ defined('BASEPATH') or exit('No direct script access allowed');
 
 class Mkeranjang extends CI_Model
 {
+    public function __construct()
+    {
+        parent::__construct();
+        $this->load->model("Mmember");
+    }
+
     public function simpan($input, $id_produk)
     {
         $this->db->where("id_produk", $id_produk);
@@ -72,5 +78,70 @@ class Mkeranjang extends CI_Model
         $this->db->join('produk', 'keranjang.id_produk = produk.id_produk');
 
         return $this->db->get("keranjang")->result_array();
+    }
+
+    public function checkout($keranjang, $id_member_jual, $id_member_beli, $nama_ekspedisi, $ongkir_terpilih)
+    {
+        $member_jual = $this->Mmember->detail($id_member_jual);
+        $member_beli = $this->Mmember->detail($id_member_beli);
+
+        $total_belanja = 0;
+        $total_berat = 0;
+        foreach ($keranjang as $item) {
+            $produk = $this->db->get_where("produk", ["id_produk" => $item["id_produk"]])->row_array();
+            if ($produk) {
+                $total_belanja += $produk["harga_produk"] * $item["jumlah"];
+                $total_berat += $produk["berat_produk"] * $item["jumlah"];
+            }
+        }
+
+        $data = [
+            "kode_transaksi" => date("YmdHis") . rand(1111, 9999),
+            "id_member_beli" => $id_member_beli,
+            "id_member_jual" => $id_member_jual,
+            "tanggal_transaksi" => date("Y-m-d H:i:s"),
+            "belanja_transaksi" => $total_belanja,
+            "status_transaksi" => "pesan",
+            "ongkir_transaksi" => $ongkir_terpilih["cost"][0]["value"],
+            "total_transaksi" => $total_belanja + $ongkir_terpilih["cost"][0]["value"],
+            "bayar_transaksi" => $total_belanja + $ongkir_terpilih["cost"][0]["value"],
+            "distrik_pengirim" => $member_jual["kode_distrik_member"],
+            "nama_pengirim" => $member_jual["nama_member"],
+            "wa_pengirim" => $member_jual["wa_member"],
+            "alamat_pengirim" => $member_jual["alamat_member"],
+            "distrik_penerima" => $member_beli["kode_distrik_member"],
+            "nama_penerima" => $member_beli["nama_member"],
+            "wa_penerima" => $member_beli["wa_member"],
+            "alamat_penerima" => $member_beli["alamat_member"],
+            "nama_ekspedisi" => $nama_ekspedisi,
+            "layanan_ekspedisi" => $ongkir_terpilih["description"],
+            "estimasi_ekspedisi" => $ongkir_terpilih["cost"][0]["value"],
+            "berat_ekspedisi" => $total_berat,
+        ];
+
+        $this->db->insert("transaksi", $data);
+        $id_transaksi = $this->db->insert_id();
+
+        // Simpan detail transaksi
+        foreach ($keranjang as $item) {
+            $produk = $this->db->get_where("produk", ["id_produk" => $item["id_produk"]])->row_array();
+            if ($produk) {
+                $detail = [
+                    "id_transaksi" => $id_transaksi,
+                    "id_produk" => $item["id_produk"],
+                    "nama_beli" => $produk["nama_produk"],
+                    "harga_beli" => $produk["harga_produk"],
+                    "jumlah_beli" => $item["jumlah"],
+                ];
+                $this->db->insert("transaksi_detail", $detail);
+            }
+        }
+
+        $this->db->where("id_member_beli", $id_member_beli);
+        $this->db->where("id_member_jual", $id_member_jual);
+        $this->db->delete("keranjang");
+
+        $this->session->set_flashdata("pesan_sukses", "Checkout berhasil, silakan lakukan pembayaran.");
+        redirect("transaksi/detail/" . $id_transaksi);
     }
 }
