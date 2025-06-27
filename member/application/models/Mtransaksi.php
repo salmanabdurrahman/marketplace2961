@@ -33,4 +33,10 @@ class Mtransaksi extends CI_Model
         $this->db->where("id_member_beli", $id_member);
         return $this->db->get("transaksi")->result_array();
     }
+
+    public function ubah_status_lunas($id_transaksi)
+    {
+        $this->db->where('id_transaksi', $id_transaksi);
+        return $this->db->update('transaksi', ['status_transaksi' => 'lunas']);
+    }
 }

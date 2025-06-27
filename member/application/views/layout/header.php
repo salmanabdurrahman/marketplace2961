@@ -46,7 +46,7 @@
 							<ul class="dropdown-menu">
 								<li><a class="dropdown-item" href="<?php echo base_url('/seller/produk'); ?>">Produk
 										Saya</a></li>
-								<li><a class="dropdown-item" href="<?php echo base_url('/seller/transaksi'); ?>">Transaksi
+								<li><a class="dropdown-item" href="<?php echo base_url('/seller/transaksi'); ?>">Penjualan
 										Saya</a>
 								</li>
 								<li><a class="dropdown-item" href="<?php echo base_url('/transaksi'); ?>">Pembelian
