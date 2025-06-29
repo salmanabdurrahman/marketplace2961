@@ -106,7 +106,6 @@ if ($this->session->flashdata("pesan_error")) {
         ";
 }
 ?>
-?>
 </body>
 
 </html>

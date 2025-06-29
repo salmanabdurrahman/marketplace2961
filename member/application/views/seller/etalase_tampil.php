@@ -34,22 +34,20 @@
 
 <main class="container py-5">
     <div class="pb-4 mb-4 border-bottom">
-        <h2>Semua Produk</h2>
-        <p class="text-muted">Jelajahi semua produk terbaik yang kami tawarkan.</p>
+        <h2>Produk Anda</h2>
+        <p class="text-muted">Berikut adalah daftar produk yang Anda jual di marketplace ini.</p>
     </div>
     <div class="row row-cols-2 row-cols-sm-2 row-cols-md-3 row-cols-lg-4 g-4">
         <?php foreach ($produk as $k): ?>
             <div class="col">
-                <a href="<?php echo base_url('produk/detail/' . $k["id_produk"]); ?>" class="text-decoration-none">
-                    <div class="card card-product">
-                        <img src="<?php echo $this->config->item("url_produk") . $k["foto_produk"]; ?>" class="card-img-top"
-                            alt="<?php echo $k["nama_produk"]; ?>" loading="lazy">
-                        <div class="card-body p-3">
-                            <h3 class="card-title"><?php echo $k["nama_produk"]; ?></h3>
-                            <p class="card-price">Rp. <?php echo number_format($k["harga_produk"], 0, ',', '.'); ?></p>
-                        </div>
+                <div class="card card-product">
+                    <img src="<?php echo $this->config->item("url_produk") . $k["foto_produk"]; ?>" class="card-img-top"
+                        alt="<?php echo $k["nama_produk"]; ?>" loading="lazy">
+                    <div class="card-body p-3">
+                        <h3 class="card-title"><?php echo $k["nama_produk"]; ?></h3>
+                        <p class="card-price">Rp. <?php echo number_format($k["harga_produk"], 0, ',', '.'); ?></p>
                     </div>
-                </a>
+                </div>
             </div>
         <?php endforeach; ?>
     </div>

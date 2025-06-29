@@ -80,4 +80,13 @@ class Produk extends CI_Controller
         $this->session->set_flashdata("pesan_sukses", "Data produk berhasil dihapus");
         redirect("seller/produk");
     }
+
+    public function etalase()
+    {
+        $id_member = $this->session->userdata("id_member");
+        $data["produk"] = $this->Mproduk->produk_member($id_member);
+        $this->load->view("layout/header");
+        $this->load->view("seller/etalase_tampil", $data);
+        $this->load->view("layout/footer");
+    }
 }

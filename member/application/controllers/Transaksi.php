@@ -26,6 +26,12 @@ class Transaksi extends CI_Controller
 
     public function detail($id_transaksi)
     {
+        $transaksi = $this->Mtransaksi->detail($id_transaksi);
+        if (!$transaksi) {
+            $this->session->set_flashdata("pesan_error", "Transaksi tidak ditemukan.");
+            redirect('transaksi');
+        }
+
         require_once('vendor/autoload.php');
         \Midtrans\Config::$serverKey = $_ENV['MIDTRANS_SERVER_KEY'];
         \Midtrans\Config::$isProduction = false;

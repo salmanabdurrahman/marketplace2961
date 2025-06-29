@@ -29,7 +29,7 @@ class Transaksi extends CI_Controller
         $data["transaksi"] = $this->Mtransaksi->detail($id_transaksi);
         $data["transaksi_detail"] = $this->Mtransaksi->transaksi_detail($id_transaksi);
         $this->load->view("layout/header");
-        $this->load->view("transaksi/transaksi_detail", $data);
+        $this->load->view("seller/transaksi_detail", $data);
         $this->load->view("layout/footer");
     }
 }

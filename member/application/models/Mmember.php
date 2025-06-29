@@ -3,6 +3,12 @@ defined('BASEPATH') or exit('No direct script access allowed');
 
 class Mmember extends CI_Model
 {
+    public function __construct()
+    {
+        parent::__construct();
+        $this->load->model("Mkeranjang");
+    }
+
     public function tampil()
     {
         $q = $this->db->get("member")->result_array();
@@ -48,6 +54,11 @@ class Mmember extends CI_Model
         $this->session->set_userdata("nama_distrik_member", $result["nama_distrik_member"]);
         $this->session->set_userdata("kode_distrik_member", $result["kode_distrik_member"]);
 
+        // Set icon keranjang
+        $id_member = $this->session->userdata("id_member");
+        $icon_keranjang = $this->Mkeranjang->jumlah_keranjang($id_member);
+        $this->session->set_userdata("icon_keranjang", $icon_keranjang);
+
         $this->session->set_flashdata("pesan_sukses", "Anda berhasil login");
         redirect("/");
     }
@@ -61,6 +72,7 @@ class Mmember extends CI_Model
         $this->session->unset_userdata("wa_member");
         $this->session->unset_userdata("nama_distrik_member");
         $this->session->unset_userdata("kode_distrik_member");
+        $this->session->unset_userdata("icon_keranjang");
     }
 
     public function ubah($input, $id_member)

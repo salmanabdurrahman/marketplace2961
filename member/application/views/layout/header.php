@@ -87,13 +87,13 @@
 				<?php if (isset($_SESSION["id_member"])) { ?>
 					<ul class="navbar-nav me-auto mb-2 mb-lg-0">
 						<li class="nav-item">
-							<a class="nav-link" href="<?php echo base_url('/'); ?>">Home</a>
-						</li>
-						<li class="nav-item">
-							<a class="nav-link" href="<?php echo base_url('/kategori'); ?>">Kategori</a>
+							<a class="nav-link" href="<?php echo base_url('/'); ?>">Beranda</a>
 						</li>
 						<li class="nav-item">
 							<a class="nav-link" href="<?php echo base_url('/produk'); ?>">Produk</a>
+						</li>
+						<li class="nav-item">
+							<a class="nav-link" href="<?php echo base_url('/kategori'); ?>">Kategori</a>
 						</li>
 					</ul>
 				<?php } ?>
@@ -102,6 +102,15 @@
 						<a href="<?php echo base_url('/keranjang'); ?>"
 							class="btn btn-outline-secondary me-2 position-relative" title="Keranjang Belanja">
 							<i class="bi bi-cart fs-5"></i>
+							<?php
+							$cart_count = isset($_SESSION['icon_keranjang']) ? $_SESSION['icon_keranjang'] : 0;
+							if ($cart_count > 0) {
+								?>
+								<span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
+									<?php echo $cart_count; ?>
+									<span class="visually-hidden">item di keranjang</span>
+								</span>
+							<?php } ?>
 						</a>
 						<div class="vr d-none d-lg-block me-2"></div>
 						<div class="nav-item dropdown">
@@ -125,6 +134,9 @@
 								</li>
 								<li><a class="dropdown-item" href="<?php echo base_url('/seller/produk'); ?>">Produk
 										Saya</a></li>
+								<li><a class="dropdown-item"
+										href="<?php echo base_url('/seller/produk/etalase'); ?>">Etalase
+										Saya</a></li>
 								<li><a class="dropdown-item" href="<?php echo base_url('/seller/transaksi'); ?>">Penjualan
 										Saya</a></li>
 								<li>
@@ -135,8 +147,9 @@
 							</ul>
 						</div>
 					<?php } else { ?>
-						<button class="btn btn-outline-secondary me-2" data-bs-toggle="modal"
-							data-bs-target="#loginModal">Login</button>
+						<!-- <button class="btn btn-outline-secondary me-2" data-bs-toggle="modal"
+							data-bs-target="#loginModal">Login</button> -->
+						<a href="<?php echo base_url('/login'); ?>" class="btn btn-outline-secondary me-2">Login</a>
 						<a href="<?php echo base_url('/register'); ?>" class="btn btn-primary">Daftar</a>
 					<?php } ?>
 				</div>

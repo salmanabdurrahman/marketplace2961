@@ -3,6 +3,14 @@ defined('BASEPATH') or exit('No direct script access allowed');
 
 class Mproduk extends CI_Model
 {
+    public function tampil_semua_produk($id_member)
+    {
+        $this->db->where('id_member !=', $id_member);
+        $this->db->order_by("id_produk", "DESC");
+        $q = $this->db->get("produk")->result_array();
+        return $q;
+    }
+
     public function tampil()
     {
         $this->db->order_by("id_produk", "DESC");

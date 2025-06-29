@@ -34,6 +34,11 @@ class Mkeranjang extends CI_Model
             $this->db->insert("keranjang", $input);
         }
 
+        // Set icon keranjang
+        $id_member = $this->session->userdata("id_member");
+        $icon_keranjang = $this->Mkeranjang->jumlah_keranjang($id_member);
+        $this->session->set_userdata("icon_keranjang", $icon_keranjang);
+
         $this->session->set_flashdata("pesan_sukses", "Anda berhasil menambahkan produk ke keranjang");
         redirect("/");
     }
@@ -56,10 +61,10 @@ class Mkeranjang extends CI_Model
             $data[] = $q[$key];
         }
 
-        if (empty($data)) {
-            $this->session->set_flashdata("pesan_error", "Keranjang Anda kosong");
-            redirect("/");
-        }
+        // if (empty($data)) {
+        //     $this->session->set_flashdata("pesan_error", "Keranjang Anda kosong");
+        //     redirect("/");
+        // }
 
         return $data;
     }
@@ -69,6 +74,11 @@ class Mkeranjang extends CI_Model
         $this->db->where("id_keranjang", $id_keranjang);
         $this->db->where("id_member_beli", $this->session->userdata("id_member"));
         $this->db->delete("keranjang");
+
+        // Set icon keranjang
+        $id_member = $this->session->userdata("id_member");
+        $icon_keranjang = $this->Mkeranjang->jumlah_keranjang($id_member);
+        $this->session->set_userdata("icon_keranjang", $icon_keranjang);
     }
 
     public function tampil_member_jual($id_member_jual)
@@ -141,7 +151,18 @@ class Mkeranjang extends CI_Model
         $this->db->where("id_member_jual", $id_member_jual);
         $this->db->delete("keranjang");
 
+        // Set icon keranjang
+        $id_member = $this->session->userdata("id_member");
+        $icon_keranjang = $this->Mkeranjang->jumlah_keranjang($id_member);
+        $this->session->set_userdata("icon_keranjang", $icon_keranjang);
+
         $this->session->set_flashdata("pesan_sukses", "Checkout berhasil, silakan lakukan pembayaran.");
         redirect("transaksi/detail/" . $id_transaksi);
+    }
+
+    public function jumlah_keranjang($id_member)
+    {
+        $this->db->where('id_member_beli', $id_member);
+        return $this->db->count_all_results('keranjang');
     }
 }
