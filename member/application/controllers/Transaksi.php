@@ -75,7 +75,11 @@ class Transaksi extends CI_Controller
             }
 
             if (isset($data["fromMidtrans"]["transaction_status"]) && $data["fromMidtrans"]["transaction_status"] === 'settlement') {
-                $this->Mtransaksi->ubah_status_lunas($id_transaksi);
+                $this->Mtransaksi->ubah_status($id_transaksi, 'lunas');
+            }
+
+            if (isset($data["fromMidtrans"]["transaction_status"]) && $data["fromMidtrans"]["transaction_status"] === 'expire') {
+                $this->Mtransaksi->ubah_status($id_transaksi, 'batal');
             }
         } catch (\Exception $e) {
         }

@@ -34,9 +34,15 @@ class Mtransaksi extends CI_Model
         return $this->db->get("transaksi")->result_array();
     }
 
-    public function ubah_status_lunas($id_transaksi)
+    public function ubah_status($id_transaksi, $status = 'lunas')
     {
+        // Validasi status
+        $valid_status = ['lunas', 'pesan', 'batal', 'dikirim', 'selesai'];
+        if (!in_array($status, $valid_status)) {
+            throw new InvalidArgumentException("Status tidak valid. Pilih dari: " . implode(", ", $valid_status));
+        }
+
         $this->db->where('id_transaksi', $id_transaksi);
-        return $this->db->update('transaksi', ['status_transaksi' => 'lunas']);
+        return $this->db->update('transaksi', ['status_transaksi' => $status]);
     }
 }

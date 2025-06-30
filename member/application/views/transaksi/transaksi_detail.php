@@ -165,25 +165,93 @@
                                 }
                                 ?>
                             </dd>
+                            <dt class="col-sm-4">Order ID</dt>
+                            <dd class="col-sm-8"><?php echo htmlspecialchars($fromMidtrans['order_id'] ?? '-'); ?></dd>
+                            <dt class="col-sm-4">Transaction ID</dt>
+                            <dd class="col-sm-8"><?php echo htmlspecialchars($fromMidtrans['transaction_id'] ?? '-'); ?>
+                            </dd>
                             <dt class="col-sm-4">Tipe Pembayaran</dt>
                             <dd class="col-sm-8">
                                 <?php echo ucwords(str_replace('_', ' ', htmlspecialchars($fromMidtrans['payment_type'] ?? '-'))); ?>
                             </dd>
-                            <?php if (!empty($fromMidtrans['va_numbers']) && is_array($fromMidtrans['va_numbers'])): ?>
+                            <?php
+                            // Virtual Account (va_numbers)
+                            if (!empty($fromMidtrans['va_numbers']) && is_array($fromMidtrans['va_numbers'])):
+                                ?>
                                 <dt class="col-sm-4">Virtual Account</dt>
                                 <dd class="col-sm-8">
                                     <?php foreach ($fromMidtrans['va_numbers'] as $va): ?>
-                                        <strong><?php echo strtoupper(htmlspecialchars($va['bank'] ?? '-')); ?>:</strong>
-                                        <?php echo htmlspecialchars($va['va_number'] ?? '-'); ?>
+                                        <div>
+                                            <strong><?php echo strtoupper(htmlspecialchars($va['bank'] ?? '-')); ?>:</strong>
+                                            <?php echo htmlspecialchars($va['va_number'] ?? '-'); ?>
+                                        </div>
                                     <?php endforeach; ?>
                                 </dd>
                             <?php endif; ?>
+                            <?php
+                            // Permata VA
+                            if (!empty($fromMidtrans['permata_va_number'])):
+                                ?>
+                                <dt class="col-sm-4">Permata VA</dt>
+                                <dd class="col-sm-8"><?php echo htmlspecialchars($fromMidtrans['permata_va_number']); ?></dd>
+                            <?php endif; ?>
+                            <?php
+                            // BCA KlikPay
+                            if (!empty($fromMidtrans['bca_va_number'])):
+                                ?>
+                                <dt class="col-sm-4">BCA VA</dt>
+                                <dd class="col-sm-8"><?php echo htmlspecialchars($fromMidtrans['bca_va_number']); ?></dd>
+                            <?php endif; ?>
+                            <?php
+                            // E-Channel (Mandiri Bill)
+                            if (!empty($fromMidtrans['bill_key']) && !empty($fromMidtrans['biller_code'])):
+                                ?>
+                                <dt class="col-sm-4">Mandiri Bill Key</dt>
+                                <dd class="col-sm-8"><?php echo htmlspecialchars($fromMidtrans['bill_key']); ?></dd>
+                                <dt class="col-sm-4">Mandiri Biller Code</dt>
+                                <dd class="col-sm-8"><?php echo htmlspecialchars($fromMidtrans['biller_code']); ?></dd>
+                            <?php endif; ?>
+                            <?php
+                            // Convenience Store (Indomaret/Alfamart)
+                            if (!empty($fromMidtrans['payment_code'])):
+                                ?>
+                                <dt class="col-sm-4">Kode Pembayaran</dt>
+                                <dd class="col-sm-8"><?php echo htmlspecialchars($fromMidtrans['payment_code']); ?></dd>
+                            <?php endif; ?>
+                            <?php
+                            // QRIS
+                            if (!empty($fromMidtrans['qr_string'])):
+                                ?>
+                                <dt class="col-sm-4">QRIS String</dt>
+                                <dd class="col-sm-8">
+                                    <textarea class="form-control form-control-sm"
+                                        readonly><?php echo htmlspecialchars($fromMidtrans['qr_string']); ?></textarea>
+                                </dd>
+                            <?php endif; ?>
+                            <dt class="col-sm-4">Jumlah</dt>
+                            <dd class="col-sm-8">
+                                Rp. <?php echo number_format(floatval($fromMidtrans['gross_amount'] ?? 0), 0, ',', '.'); ?>
+                                <?php if (!empty($fromMidtrans['currency'])): ?>
+                                    <span class="text-muted">(<?php echo htmlspecialchars($fromMidtrans['currency']); ?>)</span>
+                                <?php endif; ?>
+                            </dd>
                             <dt class="col-sm-4">Batas Waktu</dt>
                             <dd class="col-sm-8">
                                 <?php
                                 $expiry = $fromMidtrans['expiry_time'] ?? null;
                                 if ($expiry) {
                                     echo date('d M Y, H:i:s', strtotime(htmlspecialchars($expiry)));
+                                } else {
+                                    echo '-';
+                                }
+                                ?>
+                            </dd>
+                            <dt class="col-sm-4">Waktu Transaksi</dt>
+                            <dd class="col-sm-8">
+                                <?php
+                                $trxTime = $fromMidtrans['transaction_time'] ?? null;
+                                if ($trxTime) {
+                                    echo date('d M Y, H:i:s', strtotime(htmlspecialchars($trxTime)));
                                 } else {
                                     echo '-';
                                 }
@@ -206,14 +274,16 @@
         const payButton = document.getElementById('pay-button');
 
         function triggerPayment() {
-            snap.pay(snapToken, {
-                onSuccess: function (result) { window.location.reload(); },
-                onPending: function (result) { window.location.reload(); },
-                onError: function (result) { window.location.reload(); },
-                onClose: function () {
-                    console.log('Popup ditutup. Klik tombol "Lanjutkan Pembayaran" untuk membuka lagi.');
-                }
-            });
+            if (snapToken) {
+                snap.pay(snapToken, {
+                    onSuccess: function (result) { window.location.reload(); },
+                    onPending: function (result) { window.location.reload(); },
+                    onError: function (result) { window.location.reload(); },
+                    onClose: function () {
+                        console.log('Popup ditutup. Klik tombol "Lanjutkan Pembayaran" untuk membuka lagi.');
+                    }
+                });
+            }
         }
 
         if (localStatus !== 'lunas') {
