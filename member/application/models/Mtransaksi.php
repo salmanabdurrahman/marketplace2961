@@ -45,4 +45,16 @@ class Mtransaksi extends CI_Model
         $this->db->where('id_transaksi', $id_transaksi);
         return $this->db->update('transaksi', ['status_transaksi' => $status]);
     }
+
+    public function update_resi($id_transaksi, $data)
+    {
+        $transaksi = $this->detail($id_transaksi);
+        if (!$transaksi || $transaksi['status_transaksi'] !== 'lunas') {
+            $this->session->set_flashdata("pesan_error", "Hanya transaksi dengan status 'lunas' yang bisa diupdate resi.");
+            return redirect("seller/transaksi/detail/$id_transaksi");
+        }
+
+        $this->db->where('id_transaksi', $id_transaksi);
+        return $this->db->update('transaksi', ['resi_ekspedisi' => $data['resi_ekspedisi']]);
+    }
 }

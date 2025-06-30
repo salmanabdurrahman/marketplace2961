@@ -85,184 +85,201 @@
                         <?php echo strtoupper($transaksi["nama_ekspedisi"] ?? ''); ?><br><?php echo $transaksi["layanan_ekspedisi"] ?? ''; ?>
                         (Est. <?php echo $transaksi["estimasi_ekspedisi"] ?? ''; ?> hari)
                     </p>
-                </div>
-            </div>
-            <!-- Tabel Rincian Produk -->
-            <div class="table-responsive">
-                <table class="table">
-                    <thead>
-                        <tr>
-                            <th>Produk</th>
-                            <th class="text-center">Jumlah</th>
-                            <th class="text-end">Harga Satuan</th>
-                            <th class="text-end">Subtotal</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <?php foreach ($transaksi_detail as $k => $v): ?>
-                            <tr>
-                                <td><?php echo $v["nama_beli"] ?? ''; ?></td>
-                                <td class="text-center"><?php echo $v["jumlah_beli"] ?? ''; ?></td>
-                                <td class="text-end">Rp. <?php echo number_format($v["harga_beli"] ?? 0, 0, ',', '.'); ?>
-                                </td>
-                                <td class="text-end">Rp.
-                                    <?php echo number_format($v["harga_beli"] * $v["jumlah_beli"], 0, ',', '.'); ?>
-                                </td>
-                            </tr>
-                        <?php endforeach; ?>
-                    </tbody>
-                    <tfoot>
-                        <tr>
-                            <th colspan="3" class="text-end border-0">Total Belanja:</th>
-                            <th class="text-end border-0">Rp.
-                                <?php echo number_format($transaksi["belanja_transaksi"] ?? 0, 0, ',', '.'); ?>
-                            </th>
-                        </tr>
-                        <tr>
-                            <th colspan="3" class="text-end border-0">Ongkos Kirim:</th>
-                            <th class="text-end border-0">Rp.
-                                <?php echo number_format($transaksi["ongkir_transaksi"] ?? 0, 0, ',', '.'); ?>
-                            </th>
-                        </tr>
-                        <tr class="h5">
-                            <th colspan="3" class="text-end border-0">Total Pembayaran:</th>
-                            <th class="text-end border-0" style="color:var(--green-dark);">Rp.
-                                <?php echo number_format($transaksi["total_transaksi"] ?? 0, 0, ',', '.'); ?>
-                            </th>
-                        </tr>
-                    </tfoot>
-                </table>
-            </div>
-            <!-- Tombol Bayar Manual -->
-            <?php if (strtolower($transaksi['status_transaksi'] ?? '') !== 'lunas' && isset($snapToken)): ?>
-                <div class="d-grid mt-1">
-                    <button id="pay-button" class="btn btn-warning btn-lg"><i class="bi bi-credit-card me-2"></i>Lanjutkan
-                        Pembayaran</button>
-                </div>
-            <?php endif; ?>
-            <!-- Detail Pembayaran Midtrans (jika ada) -->
-            <?php if (isset($fromMidtrans) && is_array($fromMidtrans)): ?>
-                <hr class="my-4">
-                <div class="card bg-light border-dashed">
-                    <div class="card-body">
-                        <div class="d-flex justify-content-between align-items-center mb-3">
-                            <h6 class="mb-0">Detail Pembayaran</h6>
-                            <button type="button" class="btn btn-sm btn-outline-secondary" onclick="location.reload();">
-                                <i class="bi bi-arrow-clockwise"></i> Cek Status
-                            </button>
-                        </div>
-                        <dl class="row mb-0 small">
-                            <dt class="col-sm-4">Status</dt>
-                            <dd class="col-sm-8 fw-semibold">
-                                <?php
-                                $status = $fromMidtrans['transaction_status'] ?? null;
-                                if ($status === 'settlement') {
-                                    echo 'Lunas';
-                                } elseif ($status) {
-                                    echo htmlspecialchars(ucwords(str_replace('_', ' ', $status)));
-                                } else {
-                                    echo '-';
-                                }
-                                ?>
-                            </dd>
-                            <dt class="col-sm-4">Order ID</dt>
-                            <dd class="col-sm-8"><?php echo htmlspecialchars($fromMidtrans['order_id'] ?? '-'); ?></dd>
-                            <dt class="col-sm-4">Transaction ID</dt>
-                            <dd class="col-sm-8"><?php echo htmlspecialchars($fromMidtrans['transaction_id'] ?? '-'); ?>
-                            </dd>
-                            <dt class="col-sm-4">Tipe Pembayaran</dt>
-                            <dd class="col-sm-8">
-                                <?php echo ucwords(str_replace('_', ' ', htmlspecialchars($fromMidtrans['payment_type'] ?? '-'))); ?>
-                            </dd>
-                            <?php
-                            // Virtual Account (va_numbers)
-                            if (!empty($fromMidtrans['va_numbers']) && is_array($fromMidtrans['va_numbers'])):
-                                ?>
-                                <dt class="col-sm-4">Virtual Account</dt>
-                                <dd class="col-sm-8">
-                                    <?php foreach ($fromMidtrans['va_numbers'] as $va): ?>
-                                        <div>
-                                            <strong><?php echo strtoupper(htmlspecialchars($va['bank'] ?? '-')); ?>:</strong>
-                                            <?php echo htmlspecialchars($va['va_number'] ?? '-'); ?>
-                                        </div>
-                                    <?php endforeach; ?>
-                                </dd>
-                            <?php endif; ?>
-                            <?php
-                            // Permata VA
-                            if (!empty($fromMidtrans['permata_va_number'])):
-                                ?>
-                                <dt class="col-sm-4">Permata VA</dt>
-                                <dd class="col-sm-8"><?php echo htmlspecialchars($fromMidtrans['permata_va_number']); ?></dd>
-                            <?php endif; ?>
-                            <?php
-                            // BCA KlikPay
-                            if (!empty($fromMidtrans['bca_va_number'])):
-                                ?>
-                                <dt class="col-sm-4">BCA VA</dt>
-                                <dd class="col-sm-8"><?php echo htmlspecialchars($fromMidtrans['bca_va_number']); ?></dd>
-                            <?php endif; ?>
-                            <?php
-                            // E-Channel (Mandiri Bill)
-                            if (!empty($fromMidtrans['bill_key']) && !empty($fromMidtrans['biller_code'])):
-                                ?>
-                                <dt class="col-sm-4">Mandiri Bill Key</dt>
-                                <dd class="col-sm-8"><?php echo htmlspecialchars($fromMidtrans['bill_key']); ?></dd>
-                                <dt class="col-sm-4">Mandiri Biller Code</dt>
-                                <dd class="col-sm-8"><?php echo htmlspecialchars($fromMidtrans['biller_code']); ?></dd>
-                            <?php endif; ?>
-                            <?php
-                            // Convenience Store (Indomaret/Alfamart)
-                            if (!empty($fromMidtrans['payment_code'])):
-                                ?>
-                                <dt class="col-sm-4">Kode Pembayaran</dt>
-                                <dd class="col-sm-8"><?php echo htmlspecialchars($fromMidtrans['payment_code']); ?></dd>
-                            <?php endif; ?>
-                            <?php
-                            // QRIS
-                            if (!empty($fromMidtrans['qr_string'])):
-                                ?>
-                                <dt class="col-sm-4">QRIS String</dt>
-                                <dd class="col-sm-8">
-                                    <textarea class="form-control form-control-sm"
-                                        readonly><?php echo htmlspecialchars($fromMidtrans['qr_string']); ?></textarea>
-                                </dd>
-                            <?php endif; ?>
-                            <dt class="col-sm-4">Jumlah</dt>
-                            <dd class="col-sm-8">
-                                Rp. <?php echo number_format(floatval($fromMidtrans['gross_amount'] ?? 0), 0, ',', '.'); ?>
-                                <?php if (!empty($fromMidtrans['currency'])): ?>
-                                    <span class="text-muted">(<?php echo htmlspecialchars($fromMidtrans['currency']); ?>)</span>
-                                <?php endif; ?>
-                            </dd>
-                            <dt class="col-sm-4">Batas Waktu</dt>
-                            <dd class="col-sm-8">
-                                <?php
-                                $expiry = $fromMidtrans['expiry_time'] ?? null;
-                                if ($expiry) {
-                                    echo date('d M Y, H:i:s', strtotime(htmlspecialchars($expiry)));
-                                } else {
-                                    echo '-';
-                                }
-                                ?>
-                            </dd>
-                            <dt class="col-sm-4">Waktu Transaksi</dt>
-                            <dd class="col-sm-8">
-                                <?php
-                                $trxTime = $fromMidtrans['transaction_time'] ?? null;
-                                if ($trxTime) {
-                                    echo date('d M Y, H:i:s', strtotime(htmlspecialchars($trxTime)));
-                                } else {
-                                    echo '-';
-                                }
-                                ?>
-                            </dd>
-                        </dl>
+                    <div class="mt-2">
+                        <?php
+                        $resi = $transaksi["resi_ekspedisi"] ?? '';
+                        ?>
+                        <span class="fw-semibold">No. Resi:</span>
+                        <?php if (!empty($resi)): ?>
+                            <span class="text-success"><?php echo htmlspecialchars($resi); ?></span>
+                        <?php elseif (empty($resi) && $transaksi["status_transaksi"] === 'lunas'): ?>
+                            <span class="text-danger">Belum dikirim</span>
+                        <?php else: ?>
+                            <span class="text-muted">-</span>
+                        <?php endif; ?>
                     </div>
                 </div>
-            <?php endif; ?>
+                <!-- Tabel Rincian Produk -->
+                <div class="table-responsive">
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th>Produk</th>
+                                <th class="text-center">Jumlah</th>
+                                <th class="text-end">Harga Satuan</th>
+                                <th class="text-end">Subtotal</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <?php foreach ($transaksi_detail as $k => $v): ?>
+                                <tr>
+                                    <td><?php echo $v["nama_beli"] ?? ''; ?></td>
+                                    <td class="text-center"><?php echo $v["jumlah_beli"] ?? ''; ?></td>
+                                    <td class="text-end">Rp.
+                                        <?php echo number_format($v["harga_beli"] ?? 0, 0, ',', '.'); ?>
+                                    </td>
+                                    <td class="text-end">Rp.
+                                        <?php echo number_format($v["harga_beli"] * $v["jumlah_beli"], 0, ',', '.'); ?>
+                                    </td>
+                                </tr>
+                            <?php endforeach; ?>
+                        </tbody>
+                        <tfoot>
+                            <tr>
+                                <th colspan="3" class="text-end border-0">Total Belanja:</th>
+                                <th class="text-end border-0">Rp.
+                                    <?php echo number_format($transaksi["belanja_transaksi"] ?? 0, 0, ',', '.'); ?>
+                                </th>
+                            </tr>
+                            <tr>
+                                <th colspan="3" class="text-end border-0">Ongkos Kirim:</th>
+                                <th class="text-end border-0">Rp.
+                                    <?php echo number_format($transaksi["ongkir_transaksi"] ?? 0, 0, ',', '.'); ?>
+                                </th>
+                            </tr>
+                            <tr class="h5">
+                                <th colspan="3" class="text-end border-0">Total Pembayaran:</th>
+                                <th class="text-end border-0" style="color:var(--green-dark);">Rp.
+                                    <?php echo number_format($transaksi["total_transaksi"] ?? 0, 0, ',', '.'); ?>
+                                </th>
+                            </tr>
+                        </tfoot>
+                    </table>
+                </div>
+                <!-- Tombol Bayar Manual -->
+                <?php if (strtolower($transaksi['status_transaksi'] ?? '') !== 'lunas' && isset($snapToken)): ?>
+                    <div class="d-grid mt-1">
+                        <button id="pay-button" class="btn btn-warning btn-lg"><i
+                                class="bi bi-credit-card me-2"></i>Lanjutkan
+                            Pembayaran</button>
+                    </div>
+                <?php endif; ?>
+                <!-- Detail Pembayaran Midtrans (jika ada) -->
+                <?php if (isset($fromMidtrans) && is_array($fromMidtrans)): ?>
+                    <hr class="my-4">
+                    <div class="card bg-light border-dashed">
+                        <div class="card-body">
+                            <div class="d-flex justify-content-between align-items-center mb-3">
+                                <h6 class="mb-0">Detail Pembayaran</h6>
+                                <button type="button" class="btn btn-sm btn-outline-secondary" onclick="location.reload();">
+                                    <i class="bi bi-arrow-clockwise"></i> Cek Status
+                                </button>
+                            </div>
+                            <dl class="row mb-0 small">
+                                <dt class="col-sm-4">Status</dt>
+                                <dd class="col-sm-8 fw-semibold">
+                                    <?php
+                                    $status = $fromMidtrans['transaction_status'] ?? null;
+                                    if ($status === 'settlement') {
+                                        echo 'Lunas';
+                                    } elseif ($status) {
+                                        echo htmlspecialchars(ucwords(str_replace('_', ' ', $status)));
+                                    } else {
+                                        echo '-';
+                                    }
+                                    ?>
+                                </dd>
+                                <dt class="col-sm-4">Order ID</dt>
+                                <dd class="col-sm-8"><?php echo htmlspecialchars($fromMidtrans['order_id'] ?? '-'); ?></dd>
+                                <dt class="col-sm-4">Transaction ID</dt>
+                                <dd class="col-sm-8"><?php echo htmlspecialchars($fromMidtrans['transaction_id'] ?? '-'); ?>
+                                </dd>
+                                <dt class="col-sm-4">Tipe Pembayaran</dt>
+                                <dd class="col-sm-8">
+                                    <?php echo ucwords(str_replace('_', ' ', htmlspecialchars($fromMidtrans['payment_type'] ?? '-'))); ?>
+                                </dd>
+                                <?php
+                                // Virtual Account (va_numbers)
+                                if (!empty($fromMidtrans['va_numbers']) && is_array($fromMidtrans['va_numbers'])):
+                                    ?>
+                                    <dt class="col-sm-4">Virtual Account</dt>
+                                    <dd class="col-sm-8">
+                                        <?php foreach ($fromMidtrans['va_numbers'] as $va): ?>
+                                            <div>
+                                                <strong><?php echo strtoupper(htmlspecialchars($va['bank'] ?? '-')); ?>:</strong>
+                                                <?php echo htmlspecialchars($va['va_number'] ?? '-'); ?>
+                                            </div>
+                                        <?php endforeach; ?>
+                                    </dd>
+                                <?php endif; ?>
+                                <?php
+                                // Permata VA
+                                if (!empty($fromMidtrans['permata_va_number'])):
+                                    ?>
+                                    <dt class="col-sm-4">Permata VA</dt>
+                                    <dd class="col-sm-8"><?php echo htmlspecialchars($fromMidtrans['permata_va_number']); ?>
+                                    </dd>
+                                <?php endif; ?>
+                                <?php
+                                // BCA KlikPay
+                                if (!empty($fromMidtrans['bca_va_number'])):
+                                    ?>
+                                    <dt class="col-sm-4">BCA VA</dt>
+                                    <dd class="col-sm-8"><?php echo htmlspecialchars($fromMidtrans['bca_va_number']); ?></dd>
+                                <?php endif; ?>
+                                <?php
+                                // E-Channel (Mandiri Bill)
+                                if (!empty($fromMidtrans['bill_key']) && !empty($fromMidtrans['biller_code'])):
+                                    ?>
+                                    <dt class="col-sm-4">Mandiri Bill Key</dt>
+                                    <dd class="col-sm-8"><?php echo htmlspecialchars($fromMidtrans['bill_key']); ?></dd>
+                                    <dt class="col-sm-4">Mandiri Biller Code</dt>
+                                    <dd class="col-sm-8"><?php echo htmlspecialchars($fromMidtrans['biller_code']); ?></dd>
+                                <?php endif; ?>
+                                <?php
+                                // Convenience Store (Indomaret/Alfamart)
+                                if (!empty($fromMidtrans['payment_code'])):
+                                    ?>
+                                    <dt class="col-sm-4">Kode Pembayaran</dt>
+                                    <dd class="col-sm-8"><?php echo htmlspecialchars($fromMidtrans['payment_code']); ?></dd>
+                                <?php endif; ?>
+                                <?php
+                                // QRIS
+                                if (!empty($fromMidtrans['qr_string'])):
+                                    ?>
+                                    <dt class="col-sm-4">QRIS String</dt>
+                                    <dd class="col-sm-8">
+                                        <textarea class="form-control form-control-sm"
+                                            readonly><?php echo htmlspecialchars($fromMidtrans['qr_string']); ?></textarea>
+                                    </dd>
+                                <?php endif; ?>
+                                <dt class="col-sm-4">Jumlah</dt>
+                                <dd class="col-sm-8">
+                                    Rp.
+                                    <?php echo number_format(floatval($fromMidtrans['gross_amount'] ?? 0), 0, ',', '.'); ?>
+                                    <?php if (!empty($fromMidtrans['currency'])): ?>
+                                        <span
+                                            class="text-muted">(<?php echo htmlspecialchars($fromMidtrans['currency']); ?>)</span>
+                                    <?php endif; ?>
+                                </dd>
+                                <dt class="col-sm-4">Batas Waktu</dt>
+                                <dd class="col-sm-8">
+                                    <?php
+                                    $expiry = $fromMidtrans['expiry_time'] ?? null;
+                                    if ($expiry) {
+                                        echo date('d M Y, H:i:s', strtotime(htmlspecialchars($expiry)));
+                                    } else {
+                                        echo '-';
+                                    }
+                                    ?>
+                                </dd>
+                                <dt class="col-sm-4">Waktu Transaksi</dt>
+                                <dd class="col-sm-8">
+                                    <?php
+                                    $trxTime = $fromMidtrans['transaction_time'] ?? null;
+                                    if ($trxTime) {
+                                        echo date('d M Y, H:i:s', strtotime(htmlspecialchars($trxTime)));
+                                    } else {
+                                        echo '-';
+                                    }
+                                    ?>
+                                </dd>
+                            </dl>
+                        </div>
+                    </div>
+                <?php endif; ?>
+            </div>
         </div>
-    </div>
 </main>
 
 <script src="https://app.sandbox.midtrans.com/snap/snap.js"

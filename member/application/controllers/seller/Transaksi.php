@@ -26,6 +26,17 @@ class Transaksi extends CI_Controller
 
     public function detail($id_transaksi)
     {
+        $input = $this->input->post();
+
+        $this->form_validation->set_rules("resi_ekspedisi", "Nomor Resi", "required");
+        $this->form_validation->set_message("required", "%s harus diisi");
+
+        if ($this->form_validation->run() == TRUE) {
+            $this->Mtransaksi->update_resi($id_transaksi, $input);
+            $this->session->set_flashdata("pesan_sukses", "Data transaksi berhasil diperbarui");
+            redirect("seller/transaksi/detail/$id_transaksi");
+        }
+
         $data["transaksi"] = $this->Mtransaksi->detail($id_transaksi);
         $data["transaksi_detail"] = $this->Mtransaksi->transaksi_detail($id_transaksi);
         $this->load->view("layout/header");

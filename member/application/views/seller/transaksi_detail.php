@@ -91,7 +91,9 @@
                             <p class="text-muted small mb-0">
                                 <?php echo strtoupper($transaksi["nama_ekspedisi"]); ?>
                                 (<?php echo $transaksi["layanan_ekspedisi"]; ?>)<br>
-                                Berat: <?php echo $transaksi["berat_ekspedisi"]; ?> gram
+                                Berat: <?php echo $transaksi["berat_ekspedisi"]; ?> gram<br>
+                                <strong>Nomor Resi:</strong>
+                                <?php echo !empty($transaksi["resi_ekspedisi"]) ? $transaksi["resi_ekspedisi"] : '<span class="text-danger">Belum diinput</span>'; ?>
                             </p>
                         </div>
                     </div>
@@ -149,9 +151,9 @@
                     <h5 class="mb-0">Tindakan Penjual</h5>
                 </div>
                 <div class="card-body p-4">
-                    <form action="<?php echo base_url('seller/transaksi/update/' . $transaksi["id_transaksi"]); ?>"
+                    <form action="<?php echo base_url('seller/transaksi/detail/' . $transaksi["id_transaksi"]); ?>"
                         method="post">
-                        <div class="mb-3">
+                        <!-- <div class="mb-3">
                             <label for="status_transaksi" class="form-label">Ubah Status Pesanan</label>
                             <select name="status_transaksi" id="status_transaksi" class="form-select">
                                 <option value="Diproses" <?php if ($transaksi['status_transaksi'] == 'Diproses')
@@ -163,11 +165,13 @@
                                 <option value="Batal" <?php if ($transaksi['status_transaksi'] == 'Batal')
                                     echo 'selected'; ?>>Batal</option>
                             </select>
-                        </div>
+                        </div> -->
                         <div class="mb-3">
-                            <label for="nomor_resi" class="form-label">Nomor Resi</label>
-                            <input type="text" class="form-control" name="nomor_resi" id="nomor_resi"
-                                value="<?php echo $transaksi['nomor_resi'] ?? ''; ?>" placeholder="Masukkan nomor resi">
+                            <label for="resi_ekspedisi" class="form-label">Nomor Resi</label>
+                            <input type="text" class="form-control" name="resi_ekspedisi" id="resi_ekspedisi"
+                                value="<?php echo $transaksi['resi_ekspedisi'] ?? ''; ?>"
+                                placeholder="Masukkan nomor resi">
+                            <div class="text-danger small mt-1"><?php echo form_error("resi_ekspedisi"); ?></div>
                         </div>
                         <div class="d-grid">
                             <button type="submit" class="btn btn-primary">Update Pesanan</button>

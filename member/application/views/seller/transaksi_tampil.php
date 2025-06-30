@@ -72,6 +72,7 @@
                                     <th>Tanggal</th>
                                     <th>Total</th>
                                     <th>Status</th>
+                                    <th>Resi</th>
                                     <th class="pe-4">Opsi</th>
                                 </tr>
                             </thead>
@@ -98,6 +99,9 @@
                                             ?>
                                             <span
                                                 class="badge <?php echo $badge_class; ?>"><?php echo $v["status_transaksi"]; ?></span>
+                                        </td>
+                                        <td>
+                                            <?php echo htmlspecialchars($v["resi_ekspedisi"] ?? ''); ?>
                                         </td>
                                         <td class="pe-4">
                                             <a href="<?php echo base_url('/seller/transaksi/detail/' . $v["id_transaksi"]); ?>"
