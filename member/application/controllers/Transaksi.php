@@ -26,12 +26,27 @@ class Transaksi extends CI_Controller
 
     public function detail($id_transaksi)
     {
+        $input = $this->input->post();
+
+        $this->form_validation->set_rules("id_transaksi_detail[]", "ID Transaksi Detail", "required");
+        $this->form_validation->set_rules("jumlah_rating[]", "Jumlah Rating", "required");
+        $this->form_validation->set_rules("ulasan_rating[]", "Ulasan Rating", "required");
+
+        $this->form_validation->set_message("required", "%s harus diisi");
+
         $transaksi = $this->Mtransaksi->detail($id_transaksi);
         if (!$transaksi) {
             $this->session->set_flashdata("pesan_error", "Transaksi tidak ditemukan.");
             redirect('transaksi');
         }
 
+        if ($this->form_validation->run() == TRUE) {
+            $this->Mtransaksi->buat_rating($input);
+            $this->session->set_flashdata("pesan_sukses", "Ulasan produk berhasil dibuat");
+            redirect("transaksi/detail/$id_transaksi");
+        }
+
+        // Load Midtrans library
         require_once('vendor/autoload.php');
         \Midtrans\Config::$serverKey = $_ENV['MIDTRANS_SERVER_KEY'];
         \Midtrans\Config::$isProduction = false;

@@ -57,4 +57,25 @@ class Mtransaksi extends CI_Model
         $this->db->where('id_transaksi', $id_transaksi);
         return $this->db->update('transaksi', ['resi_ekspedisi' => $data['resi_ekspedisi']]);
     }
+
+    public function buat_rating($data)
+    {
+        $list_id_transaksi_detail = $data['id_transaksi_detail'];
+        $list_jumlah_rating = $data['jumlah_rating'];
+        $list_ulasan_rating = $data['ulasan_rating'];
+
+        foreach ($list_id_transaksi_detail as $key => $id_transaksi_detail) {
+            $jumlah_rating = $list_jumlah_rating[$key];
+            $ulasan_rating = $list_ulasan_rating[$key];
+
+            $this->db->where('id_transaksi_detail', $id_transaksi_detail);
+            $this->db->update('transaksi_detail', [
+                'jumlah_rating' => $jumlah_rating,
+                'ulasan_rating' => $ulasan_rating,
+                'waktu_rating' => date('Y-m-d H:i:s')
+            ]);
+        }
+
+        return true;
+    }
 }

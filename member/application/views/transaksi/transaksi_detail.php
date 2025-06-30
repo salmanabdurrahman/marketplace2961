@@ -24,6 +24,30 @@
     .badge.status-default {
         background-color: #6c757d;
     }
+
+    .rating-stars {
+        display: inline-flex;
+        gap: 0.25rem;
+        cursor: pointer;
+    }
+
+    .rating-stars .bi {
+        font-size: 1.5rem;
+        color: #ccc;
+        transition: color 0.2s;
+    }
+
+    .rating-stars:hover .bi {
+        color: #ffc107 !important;
+    }
+
+    .rating-stars .bi:hover~.bi {
+        color: #ccc !important;
+    }
+
+    .rating-stars .bi.selected {
+        color: #ffc107;
+    }
 </style>
 
 <main class="container py-5">
@@ -280,6 +304,68 @@
                 <?php endif; ?>
             </div>
         </div>
+        <?php if (strtolower($transaksi['status_transaksi'] ?? '') === 'lunas'): ?>
+            <div class="card border-0 shadow-sm">
+                <div class="card-header bg-white" style="margin-top: -2rem;">
+                    <h5 class="mb-0">Beri Ulasan Produk</h5>
+                </div>
+                <div class="card-body p-4">
+                    <form action="" method="post"> <?php foreach ($transaksi_detail as $k => $v): ?>
+                            <?php if (!empty($v['ulasan_rating']) && !empty($v['jumlah_rating'])): ?>
+                                <div class="mb-4 pb-3 border-bottom bg-light rounded p-3">
+                                    <div class="d-flex justify-content-between align-items-start mb-2">
+                                        <p class="mb-0 fw-semibold"><?php echo $v["nama_beli"] ?? '-'; ?></p>
+                                        <small class="text-success"><i class="bi bi-check-circle-fill"></i> Ulasan diberikan</small>
+                                    </div>
+                                    <!-- Tampilkan Rating Bintang -->
+                                    <div class="mb-2">
+                                        <?php
+                                        $rating = intval($v['jumlah_rating'] ?? 0);
+                                        for ($i = 1; $i <= 5; $i++):
+                                            ?>
+                                            <i class="bi <?php echo $i <= $rating ? 'bi-star-fill' : 'bi-star'; ?>"
+                                                style="color: #ffc107; font-size: 1.2rem;"></i>
+                                        <?php endfor; ?>
+                                        <span class="ms-2 text-muted small">(<?php echo $rating; ?>/5)</span>
+                                    </div>
+                                    <!-- Tampilkan Komentar -->
+                                    <?php if (!empty($v['ulasan_rating'])): ?>
+                                        <div class="bg-white p-2 rounded border-start border-3"
+                                            style="border-color: #ffc107 !important;">
+                                            <small class="text-muted d-block mb-1">Ulasan Anda:</small>
+                                            <p class="mb-0 small"><?php echo nl2br(htmlspecialchars($v['ulasan_rating'])); ?></p>
+                                        </div>
+                                    <?php endif; ?>
+                                </div>
+                            <?php else: ?>
+                                <div class="mb-4 pb-3 border-bottom">
+                                    <p class="mb-1 fw-semibold"><?php echo $v["nama_beli"] ?? '-'; ?></p>
+                                    <input type="hidden" name="id_transaksi_detail[]"
+                                        value="<?php echo $v['id_transaksi_detail']; ?>">
+                                    <input type="hidden" class="jumlah_rating" name="jumlah_rating[]">
+                                    <div class="rating-stars mb-2" data-product-id="<?php echo $v['id_produk']; ?>">
+                                        <i class="bi bi-star" data-value="1"></i>
+                                        <i class="bi bi-star" data-value="2"></i>
+                                        <i class="bi bi-star" data-value="3"></i>
+                                        <i class="bi bi-star" data-value="4"></i>
+                                        <i class="bi bi-star" data-value="5"></i>
+                                    </div>
+                                    <div class="text-danger small"><?php echo form_error("jumlah_rating[]"); ?></div>
+                                    <textarea name="ulasan_rating[]" class="form-control form-control-sm" rows="3"
+                                        placeholder="Bagaimana pendapatmu tentang produk ini?"></textarea>
+                                    <div class="text-danger small mt-1"><?php echo form_error("ulasan_rating[]"); ?></div>
+                                </div>
+                            <?php endif; ?>
+                        <?php endforeach; ?>
+                        <?php if (empty($v['ulasan_rating']) && empty($v['jumlah_rating'])): ?>
+                            <div class="text-end">
+                                <button type="submit" class="btn btn-primary">Kirim Semua Ulasan</button>
+                            </div>
+                        <?php endif; ?>
+                    </form>
+                </div>
+            </div>
+        <?php endif; ?>
 </main>
 
 <script src="https://app.sandbox.midtrans.com/snap/snap.js"
@@ -313,4 +399,36 @@
             });
         }
     })
+</script>
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const allRatingContainers = document.querySelectorAll('.rating-stars');
+
+        allRatingContainers.forEach(container => {
+            const stars = container.querySelectorAll('.bi');
+            const jumlahInput = container.parentElement.querySelector('.jumlah_rating');
+
+            stars.forEach(star => {
+                star.addEventListener('click', function () {
+                    const value = this.getAttribute('data-value');
+
+                    stars.forEach(s => {
+                        if (parseInt(s.getAttribute('data-value')) <= value) {
+                            s.classList.add('selected');
+                            s.classList.remove('bi-star');
+                            s.classList.add('bi-star-fill');
+                        } else {
+                            s.classList.remove('selected');
+                            s.classList.remove('bi-star-fill');
+                            s.classList.add('bi-star');
+                        }
+                    });
+
+                    if (jumlahInput) {
+                        jumlahInput.value = value;
+                    }
+                });
+            });
+        });
+    });
 </script>
