@@ -22,4 +22,13 @@ class Kategori extends CI_Controller
 		$this->load->view("kategori/kategori_tampil", $data);
 		$this->load->view("layout/footer");
 	}
+
+	public function detail($id_kategori)
+	{
+		$data["kategori"] = $this->Mkategori->detail($id_kategori);
+		$data["produk"] = $this->Mkategori->tampil_produk($id_kategori);
+		$this->load->view("layout/header");
+		$this->load->view("kategori/kategori_detail", $data);
+		$this->load->view("layout/footer");
+	}
 }

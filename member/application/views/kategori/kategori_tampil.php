@@ -25,7 +25,8 @@
 	<div class="row row-cols-2 row-cols-md-3 row-cols-lg-4 g-4">
 		<?php foreach ($kategori as $k): ?>
 			<div class="col">
-				<a href="<?php echo base_url('kategori/' . $k['id_kategori']); ?>" class="text-decoration-none text-dark">
+				<a href="<?php echo base_url('kategori/detail/' . $k['id_kategori']); ?>"
+					class="text-decoration-none text-dark">
 					<div class="card card-kategori">
 						<img src="<?php echo $this->config->item("url_kategori") . $k["foto_kategori"]; ?>"
 							class="card-img-top" alt="<?php echo $k["nama_kategori"]; ?>">

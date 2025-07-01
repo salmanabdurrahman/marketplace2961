@@ -160,7 +160,7 @@
 			<?php foreach ($kategori as $key => $value): ?>
 				<div class="col">
 					<div class="kategori-item-minimalist">
-						<a href="<?php echo base_url('kategori/' . $value['id_kategori']); ?>">
+						<a href="<?php echo base_url('kategori/detail/' . $value['id_kategori']); ?>">
 							<img src="<?php echo $this->config->item("url_kategori") . $value["foto_kategori"]; ?>"
 								alt="<?php echo $value["nama_kategori"] ?>">
 							<h6><?php echo $value["nama_kategori"] ?></h6>
