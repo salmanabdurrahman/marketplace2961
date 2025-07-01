@@ -69,6 +69,13 @@ class Produk extends CI_Controller
 
         $data["kategori"] = $this->Mkategori->tampil();
         $data["produk"] = $this->Mproduk->detail($id_produk);
+
+        $id_member = $this->session->userdata("id_member");
+        if ($data["produk"]["id_member"] != $id_member) {
+            $this->session->set_flashdata("pesan_error", "Produk tidak ditemukan.");
+            redirect("seller/produk");
+        }
+
         $this->load->view("layout/header");
         $this->load->view("seller/produk_edit", $data);
         $this->load->view("layout/footer");
@@ -76,6 +83,14 @@ class Produk extends CI_Controller
 
     public function hapus($id_produk)
     {
+        $data["produk"] = $this->Mproduk->detail($id_produk);
+
+        $id_member = $this->session->userdata("id_member");
+        if ($data["produk"]["id_member"] != $id_member) {
+            $this->session->set_flashdata("pesan_error", "Produk tidak ditemukan.");
+            redirect("seller/produk");
+        }
+
         $this->Mproduk->hapus($id_produk);
         $this->session->set_flashdata("pesan_sukses", "Data produk berhasil dihapus");
         redirect("seller/produk");

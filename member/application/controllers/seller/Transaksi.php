@@ -39,6 +39,13 @@ class Transaksi extends CI_Controller
 
         $data["transaksi"] = $this->Mtransaksi->detail($id_transaksi);
         $data["transaksi_detail"] = $this->Mtransaksi->transaksi_detail($id_transaksi);
+
+        $id_member = $this->session->userdata("id_member");
+        if ($data["transaksi"]["id_member_jual"] != $id_member) {
+            $this->session->set_flashdata("pesan_error", "Transaksi tidak ditemukan.");
+            redirect('seller/transaksi');
+        }
+
         $this->load->view("layout/header");
         $this->load->view("seller/transaksi_detail", $data);
         $this->load->view("layout/footer");

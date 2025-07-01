@@ -25,8 +25,9 @@ class Kategori extends CI_Controller
 
 	public function detail($id_kategori)
 	{
+		$id_member = $this->session->userdata("id_member");
 		$data["kategori"] = $this->Mkategori->detail($id_kategori);
-		$data["produk"] = $this->Mkategori->tampil_produk($id_kategori);
+		$data["produk"] = $this->Mkategori->tampil_produk($id_kategori, $id_member);
 		$this->load->view("layout/header");
 		$this->load->view("kategori/kategori_detail", $data);
 		$this->load->view("layout/footer");
