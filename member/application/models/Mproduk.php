@@ -117,4 +117,35 @@ class Mproduk extends CI_Model
         $this->session->set_flashdata("pesan_sukses", "Data produk berhasil dihapus");
         redirect("seller/produk");
     }
+
+    public function laporan_terjual($id_member, $tanggal_mulai, $tanggal_selesai, $status)
+    {
+        $this->db->select('
+            transaksi_detail.id_produk, 
+            transaksi_detail.nama_beli, 
+            SUM(transaksi_detail.jumlah_beli) as jumlah_terjual,
+            SUM(transaksi_detail.harga_beli * transaksi_detail.jumlah_beli) as nominal_terjual
+        ');
+
+        $this->db->from('transaksi_detail');
+        $this->db->join('transaksi', 'transaksi_detail.id_transaksi = transaksi.id_transaksi', 'left');
+        $this->db->where('transaksi.id_member_jual', $id_member);
+        if (!empty($tanggal_mulai) && !empty($tanggal_selesai)) {
+            $this->db->where('DATE(transaksi.tanggal_transaksi) >=', $tanggal_mulai);
+            $this->db->where('DATE(transaksi.tanggal_transaksi) <=', $tanggal_selesai);
+        }
+
+        if ($status == 'selesai') {
+            $status_selesai = ['Lunas', 'Selesai', 'Dikirim'];
+            $this->db->where_in('transaksi.status_transaksi', $status_selesai);
+        } elseif ($status != 'semua' && !empty($status)) {
+            $this->db->where('transaksi.status_transaksi', $status);
+        }
+
+        $this->db->group_by(['transaksi_detail.id_produk', 'transaksi_detail.nama_beli']);
+        $this->db->order_by('jumlah_terjual', 'DESC');
+
+        $query = $this->db->get();
+        return $query->result_array();
+    }
 }

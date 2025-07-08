@@ -142,6 +142,9 @@
 										Saya</a></li>
 								<li><a class="dropdown-item" href="<?php echo base_url('/seller/transaksi'); ?>">Penjualan
 										Saya</a></li>
+								<li><a class="dropdown-item"
+										href="<?php echo base_url('/seller/produk/laporan_terjual'); ?>">Laporan
+										Penjualan</a></li>
 								<li>
 									<hr class="dropdown-divider">
 								</li>

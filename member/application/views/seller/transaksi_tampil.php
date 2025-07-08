@@ -54,6 +54,10 @@
                         class="list-group-item list-group-item-action active">
                         <i class="bi bi-receipt-cutoff me-2"></i> Penjualan Saya
                     </a>
+                    <a href="<?php echo base_url('/seller/produk/laporan_terjual'); ?>"
+                        class="list-group-item list-group-item-action">
+                        <i class="bi bi-bar-chart-line me-2"></i> Laporan Penjualan
+                    </a>
                 </div>
             </nav>
         </div>

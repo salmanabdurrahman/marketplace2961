@@ -104,4 +104,25 @@ class Produk extends CI_Controller
         $this->load->view("seller/etalase_tampil", $data);
         $this->load->view("layout/footer");
     }
+
+    public function laporan_terjual()
+    {
+        $input = $this->input->post() ?? [];
+
+        $id_member = $this->session->userdata("id_member");
+        $tanggal_mulai = !empty($input["tanggal_mulai"]) ? $input["tanggal_mulai"] : date("Y-m-d", strtotime("-1 month"));
+        $tanggal_selesai = !empty($input["tanggal_selesai"]) ? $input["tanggal_selesai"] : date("Y-m-d");
+        $status = !empty($input["status"]) ? $input["status"] : "selesai";
+
+        $data = [
+            "produk" => $this->Mproduk->laporan_terjual($id_member, $tanggal_mulai, $tanggal_selesai, $status),
+            "tanggal_mulai" => $tanggal_mulai,
+            "tanggal_selesai" => $tanggal_selesai,
+            "status" => $status
+        ];
+
+        $this->load->view("layout/header");
+        $this->load->view("seller/produk_laporan_terjual", $data);
+        $this->load->view("layout/footer");
+    }
 }
