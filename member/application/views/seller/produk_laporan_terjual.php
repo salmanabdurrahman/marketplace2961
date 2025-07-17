@@ -1,15 +1,4 @@
 <style>
-    .account-nav .list-group-item.active {
-        background-color: var(--green-dark);
-        border-color: var(--green-dark);
-        color: white;
-    }
-
-    .account-nav .list-group-item-action:hover,
-    .account-nav .list-group-item-action:focus {
-        background-color: var(--green-light);
-    }
-
     .highcharts-figure,
     .highcharts-data-table table {
         min-width: 310px;
@@ -21,21 +10,7 @@
 <main class="container py-5">
     <div class="row">
         <div class="col-lg-3 mb-4 mb-lg-0">
-            <nav class="account-nav">
-                <div class="list-group shadow-sm">
-                    <a href="<?php echo base_url('/seller/produk'); ?>" class="list-group-item list-group-item-action">
-                        <i class="bi bi-box-seam me-2"></i> Produk Saya
-                    </a>
-                    <a href="<?php echo base_url('/seller/transaksi'); ?>"
-                        class="list-group-item list-group-item-action">
-                        <i class="bi bi-receipt-cutoff me-2"></i> Penjualan Saya
-                    </a>
-                    <a href="<?php echo base_url('/seller/produk/laporan_terjual'); ?>"
-                        class="list-group-item list-group-item-action active">
-                        <i class="bi bi-bar-chart-line me-2"></i> Laporan Penjualan
-                    </a>
-                </div>
-            </nav>
+            <?php require APPPATH . 'views/layout/customer-sidebar.php'; ?>
         </div>
         <div class="col-lg-9">
             <div class="card border-0 shadow-sm">
@@ -140,7 +115,7 @@
                 xAxis: {
                     categories: [
                         <?php foreach ($produk as $item): ?>
-                                                                '<?php echo addslashes($item['nama_beli']); ?>',
+                                                                                                            '<?php echo addslashes($item['nama_beli']); ?>',
                         <?php endforeach; ?>
                     ],
                     crosshair: true,
@@ -173,7 +148,7 @@
                     name: 'Terjual',
                     data: [
                         <?php foreach ($produk as $item): ?>
-                                                                <?php echo $item['jumlah_terjual']; ?>,
+                                                                                                            <?php echo $item['jumlah_terjual']; ?>,
                         <?php endforeach; ?>
                     ]
                 }],

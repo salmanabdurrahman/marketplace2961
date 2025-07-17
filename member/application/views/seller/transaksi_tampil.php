@@ -1,16 +1,4 @@
 <style>
-    /* Style ini bisa diletakkan di file CSS utama jika ada */
-    .account-nav .list-group-item.active {
-        background-color: var(--green-dark);
-        border-color: var(--green-dark);
-        color: white;
-    }
-
-    .account-nav .list-group-item-action:hover,
-    .account-nav .list-group-item-action:focus {
-        background-color: var(--green-light);
-    }
-
     .table-hover>tbody>tr:hover>* {
         background-color: var(--green-light);
     }
@@ -43,25 +31,9 @@
 
 <main class="container py-5">
     <div class="row">
-        <!-- Kolom Navigasi Samping Seller -->
         <div class="col-lg-3 mb-4 mb-lg-0">
-            <nav class="account-nav">
-                <div class="list-group shadow-sm">
-                    <a href="<?php echo base_url('/seller/produk'); ?>" class="list-group-item list-group-item-action">
-                        <i class="bi bi-box-seam me-2"></i> Produk Saya
-                    </a>
-                    <a href="<?php echo base_url('/seller/transaksi'); ?>"
-                        class="list-group-item list-group-item-action active">
-                        <i class="bi bi-receipt-cutoff me-2"></i> Penjualan Saya
-                    </a>
-                    <a href="<?php echo base_url('/seller/produk/laporan_terjual'); ?>"
-                        class="list-group-item list-group-item-action">
-                        <i class="bi bi-bar-chart-line me-2"></i> Laporan Penjualan
-                    </a>
-                </div>
-            </nav>
+            <?php require APPPATH . 'views/layout/customer-sidebar.php'; ?>
         </div>
-        <!-- Kolom Konten Utama -->
         <div class="col-lg-9">
             <div class="card border-0 shadow-sm">
                 <div class="card-header bg-white py-3">

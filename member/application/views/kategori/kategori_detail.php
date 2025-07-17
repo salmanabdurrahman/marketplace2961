@@ -1,5 +1,4 @@
 <style>
-    /* Menggunakan style yang konsisten dengan halaman home */
     .card-product {
         border: 1px solid rgba(0, 0, 0, 0.1);
         box-shadow: none;
@@ -55,4 +54,9 @@
             </div>
         <?php endforeach; ?>
     </div>
+    <?php if (empty($produk)): ?>
+        <div class="text-center g-4">
+            <p class="text-muted">Tidak ada produk yang ditemukan di kategori ini.</p>
+        </div>
+    <?php endif; ?>
 </main>

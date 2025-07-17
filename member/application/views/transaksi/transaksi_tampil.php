@@ -1,9 +1,4 @@
 <style>
-    .account-nav .list-group-item.active {
-        background-color: var(--green-dark);
-        border-color: var(--green-dark);
-    }
-
     .table-hover>tbody>tr:hover>* {
         background-color: var(--green-light);
     }
@@ -28,25 +23,9 @@
 
 <main class="container py-5">
     <div class="row">
-        <!-- Kolom Navigasi Samping -->
         <div class="col-lg-3 mb-4 mb-lg-0">
-            <nav class="account-nav">
-                <div class="list-group">
-                    <a href="<?php echo base_url('transaksi'); ?>"
-                        class="list-group-item list-group-item-action active">
-                        <i class="bi bi-receipt me-2"></i> Riwayat Pembelian
-                    </a>
-                    <a href="<?php echo base_url('akun'); ?>" class="list-group-item list-group-item-action">
-                        <i class="bi bi-person-circle me-2"></i> Profil Saya
-                    </a>
-                    <a href="<?php echo base_url('logout'); ?>"
-                        class="list-group-item list-group-item-action text-danger">
-                        <i class="bi bi-box-arrow-right me-2"></i> Logout
-                    </a>
-                </div>
-            </nav>
+            <?php require APPPATH . 'views/layout/customer-sidebar.php'; ?>
         </div>
-        <!-- Kolom Konten Utama -->
         <div class="col-lg-9">
             <div class="card border-0 shadow-sm">
                 <div class="card-header bg-white py-3">

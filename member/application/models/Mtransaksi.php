@@ -22,15 +22,21 @@ class Mtransaksi extends CI_Model
         return $this->db->get("transaksi_detail")->result_array();
     }
 
-    public function transaksi_member_jual($id_member)
+    public function transaksi_member_jual($id_member, $limit = 0)
     {
         $this->db->where("id_member_jual", $id_member);
+        if ($limit > 0) {
+            $this->db->limit($limit);
+        }
         return $this->db->get("transaksi")->result_array();
     }
 
-    public function transaksi_member_beli($id_member)
+    public function transaksi_member_beli($id_member, $limit = 0)
     {
         $this->db->where("id_member_beli", $id_member);
+        if ($limit > 0) {
+            $this->db->limit($limit);
+        }
         return $this->db->get("transaksi")->result_array();
     }
 

@@ -123,28 +123,12 @@
 							</a>
 							<ul class="dropdown-menu dropdown-menu-end">
 								<li>
-									<h6 class="dropdown-header">Menu Pembeli</h6>
+									<h6 class="dropdown-header">Menu</h6>
 								</li>
-								<li><a class="dropdown-item" href="<?php echo base_url('/transaksi'); ?>">Pembelian Saya</a>
+								<li><a class="dropdown-item" href="<?php echo base_url('/home'); ?>">Dashboard</a>
 								</li>
-								<li><a class="dropdown-item" href="<?php echo base_url('/akun'); ?>">Pengaturan Akun</a>
+								<li><a class="dropdown-item" href="<?php echo base_url('/akun'); ?>">Profil Saya</a>
 								</li>
-								<li>
-									<hr class="dropdown-divider">
-								</li>
-								<li>
-									<h6 class="dropdown-header">Menu Penjual</h6>
-								</li>
-								<li><a class="dropdown-item" href="<?php echo base_url('/seller/produk'); ?>">Produk
-										Saya</a></li>
-								<li><a class="dropdown-item"
-										href="<?php echo base_url('/seller/produk/etalase'); ?>">Etalase
-										Saya</a></li>
-								<li><a class="dropdown-item" href="<?php echo base_url('/seller/transaksi'); ?>">Penjualan
-										Saya</a></li>
-								<li><a class="dropdown-item"
-										href="<?php echo base_url('/seller/produk/laporan_terjual'); ?>">Laporan
-										Penjualan</a></li>
 								<li>
 									<hr class="dropdown-divider">
 								</li>
