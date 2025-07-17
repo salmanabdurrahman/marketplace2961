@@ -148,4 +148,26 @@ class Mproduk extends CI_Model
         $query = $this->db->get();
         return $query->result_array();
     }
+
+    public function cari_produk($keyword, $id_member)
+    {
+        if (empty($keyword)) {
+            return [];
+        }
+
+        $this->db->from('produk');
+
+        $this->db->group_start();
+        $this->db->like('nama_produk', $keyword);
+        $this->db->or_like('deskripsi_produk', $keyword);
+        $this->db->group_end();
+
+        if ($id_member) {
+            $this->db->where('id_member !=', $id_member);
+        }
+
+        $this->db->order_by("id_produk", "DESC");
+
+        return $this->db->get()->result_array();
+    }
 }

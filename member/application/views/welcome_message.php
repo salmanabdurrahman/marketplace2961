@@ -137,7 +137,16 @@
 							style="background-image: url('<?php echo $this->config->item("url_slider") . $value["foto_slider"]; ?>');">
 							<div class="hero-content">
 								<h1 class="display-5"><?php echo $value["caption_slider"] ?></h1>
-								<a href="<?php echo base_url('/produk') ?>" class="btn btn-light mt-3">Lihat Koleksi</a>
+								<div class="search-form-container">
+									<form action="<?php echo base_url('produk/search'); ?>" method="get">
+										<div class="input-group search-input-group">
+											<input type="text" class="form-control" name="keyword"
+												placeholder="Cari produk, merek, atau kategori..." aria-label="Cari produk">
+											<button class="btn btn-primary px-4" type="submit"><i
+													class="bi bi-search"></i></button>
+										</div>
+									</form>
+								</div>
 							</div>
 						</div>
 					</div>

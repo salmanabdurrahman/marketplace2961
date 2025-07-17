@@ -42,4 +42,21 @@ class Produk extends CI_Controller
         $this->load->view("produk/produk_detail", $data);
         $this->load->view("layout/footer");
     }
+
+    public function search()
+    {
+        $keyword = $this->input->get('keyword', TRUE);
+
+        $data['keyword'] = $keyword;
+        $data['produk'] = [];
+
+        if (!empty($keyword)) {
+            $id_member = $this->session->userdata("id_member") ?? 0;
+            $data['produk'] = $this->Mproduk->cari_produk($keyword, $id_member);
+        }
+
+        $this->load->view("layout/header");
+        $this->load->view("produk/produk_search_tampil", $data);
+        $this->load->view("layout/footer");
+    }
 }
