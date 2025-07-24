@@ -139,8 +139,15 @@
                                 <tr>
                                     <td><?php echo $v["nama_beli"] ?? ''; ?></td>
                                     <td class="text-center"><?php echo $v["jumlah_beli"] ?? ''; ?></td>
-                                    <td class="text-end">Rp.
-                                        <?php echo number_format($v["harga_beli"] ?? 0, 0, ',', '.'); ?>
+                                    <td class="text-end">
+                                        <?php if (isset($v["diskon_beli"]) && $v["diskon_beli"] > 0): ?>
+                                            <?php $harga_asli = $v["harga_beli"] / (1 - $v["diskon_beli"] / 100); ?>
+                                            <span style="text-decoration: line-through; color: #dc3545; font-size: 0.9rem;">Rp.
+                                                <?php echo number_format($harga_asli, 0, ',', '.'); ?></span><br>
+                                            <span>Rp. <?php echo number_format($v["harga_beli"] ?? 0, 0, ',', '.'); ?></span>
+                                        <?php else: ?>
+                                            Rp. <?php echo number_format($v["harga_beli"] ?? 0, 0, ',', '.'); ?>
+                                        <?php endif; ?>
                                     </td>
                                     <td class="text-end">Rp.
                                         <?php echo number_format($v["harga_beli"] * $v["jumlah_beli"], 0, ',', '.'); ?>

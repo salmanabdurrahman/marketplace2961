@@ -72,15 +72,43 @@
                     <div class="card-body p-4">
                         <?php $sub_total = 0; ?>
                         <?php foreach ($keranjang as $item): ?>
-                            <?php $sub_total += $item['harga_produk'] * $item['jumlah']; ?>
+                            <?php
+                            if (isset($item["diskon"]) && $item["diskon"] > 0) {
+                                $harga_diskon = $item["harga_produk"] - ($item["harga_produk"] * $item["diskon"] / 100);
+                                $sub_total += $harga_diskon * $item['jumlah'];
+                            } else {
+                                $sub_total += $item['harga_produk'] * $item['jumlah'];
+                            }
+                            ?>
                             <div class="summary-item mb-3">
                                 <img src="<?php echo $this->config->item("url_produk") . $item["foto_produk"]; ?>" alt="">
                                 <div class="flex-grow-1">
                                     <p class="mb-0 small"><?php echo $item['nama_produk']; ?></p>
+                                    <?php if (isset($item["diskon"]) && $item["diskon"] > 0): ?>
+                                        <?php $harga_diskon = $item["harga_produk"] - ($item["harga_produk"] * $item["diskon"] / 100); ?>
+                                        <p class="mb-0 small">
+                                            <span style="text-decoration: line-through; color: #dc3545; font-size: 0.75rem;">Rp
+                                                <?php echo number_format($item['harga_produk'], 0, ',', '.'); ?></span>
+                                            <span class="fw-semibold">Rp
+                                                <?php echo number_format($harga_diskon, 0, ',', '.'); ?></span>
+                                        </p>
+                                    <?php else: ?>
+                                        <p class="mb-0 small text-muted">Rp
+                                            <?php echo number_format($item['harga_produk'], 0, ',', '.'); ?>
+                                        </p>
+                                    <?php endif; ?>
                                     <p class="mb-0 small text-muted">x <?php echo $item['jumlah']; ?></p>
                                 </div>
                                 <p class="mb-0 small fw-semibold">Rp.
-                                    <?php echo number_format($item['harga_produk'] * $item['jumlah'], 0, ',', '.'); ?>
+                                    <?php
+                                    // Tampilkan subtotal dengan harga setelah diskon
+                                    if (isset($item["diskon"]) && $item["diskon"] > 0) {
+                                        $harga_diskon = $item["harga_produk"] - ($item["harga_produk"] * $item["diskon"] / 100);
+                                        echo number_format($harga_diskon * $item['jumlah'], 0, ',', '.');
+                                    } else {
+                                        echo number_format($item['harga_produk'] * $item['jumlah'], 0, ',', '.');
+                                    }
+                                    ?>
                                 </p>
                             </div>
                         <?php endforeach; ?>

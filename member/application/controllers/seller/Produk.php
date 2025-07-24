@@ -58,8 +58,12 @@ class Produk extends CI_Controller
         $this->form_validation->set_rules("berat_produk", "Berat produk", "required");
         $this->form_validation->set_rules("deskripsi_produk", "Deskripsi produk", "required");
         $this->form_validation->set_rules("id_kategori", "Kategori produk", "required");
+        $this->form_validation->set_rules("diskon", "Diskon", "numeric|greater_than_equal_to[0]|less_than_equal_to[100]");
 
         $this->form_validation->set_message("required", "%s harus diisi");
+        $this->form_validation->set_message("numeric", "%s harus berupa angka");
+        $this->form_validation->set_message("greater_than_equal_to", "%s minimal 0");
+        $this->form_validation->set_message("less_than_equal_to", "%s maksimal 100");
 
         if ($this->form_validation->run() == TRUE) {
             $this->Mproduk->edit($id_produk, $input);

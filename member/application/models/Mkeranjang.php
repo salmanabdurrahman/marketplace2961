@@ -100,7 +100,11 @@ class Mkeranjang extends CI_Model
         foreach ($keranjang as $item) {
             $produk = $this->db->get_where("produk", ["id_produk" => $item["id_produk"]])->row_array();
             if ($produk) {
-                $total_belanja += $produk["harga_produk"] * $item["jumlah"];
+                $diskon = $produk["diskon"] ?? 0;
+                $harga_asli = $produk["harga_produk"];
+                $harga_diskon = $diskon > 0 ? $harga_asli - ($harga_asli * $diskon / 100) : $harga_asli;
+                
+                $total_belanja += $harga_diskon * $item["jumlah"];
                 $total_berat += $produk["berat_produk"] * $item["jumlah"];
             }
         }
@@ -136,12 +140,17 @@ class Mkeranjang extends CI_Model
         foreach ($keranjang as $item) {
             $produk = $this->db->get_where("produk", ["id_produk" => $item["id_produk"]])->row_array();
             if ($produk) {
+                $diskon = $produk["diskon"] ?? 0;
+                $harga_asli = $produk["harga_produk"];
+                $harga_diskon = $diskon > 0 ? $harga_asli - ($harga_asli * $diskon / 100) : $harga_asli;
+
                 $detail = [
                     "id_transaksi" => $id_transaksi,
                     "id_produk" => $item["id_produk"],
                     "nama_beli" => $produk["nama_produk"],
-                    "harga_beli" => $produk["harga_produk"],
+                    "harga_beli" => $harga_diskon, // Simpan harga setelah diskon
                     "jumlah_beli" => $item["jumlah"],
+                    "diskon_beli" => $diskon, // Simpan persentase diskon
                 ];
                 $this->db->insert("transaksi_detail", $detail);
             }

@@ -53,9 +53,19 @@
                                     </div>
                                     <div class="cart-item-details">
                                         <h6 class="mb-1"><?php echo $item_produk['nama_produk']; ?></h6>
-                                        <p class="mb-0 cart-item-price">Rp
-                                            <?php echo number_format($item_produk['harga_produk'], 0, ',', '.'); ?>
-                                        </p>
+                                        <?php if (isset($item_produk["diskon"]) && $item_produk["diskon"] > 0): ?>
+                                            <?php $harga_diskon = $item_produk["harga_produk"] - ($item_produk["harga_produk"] * $item_produk["diskon"] / 100); ?>
+                                            <p class="mb-0">
+                                                <span style="text-decoration: line-through; color: #dc3545; font-size: 0.8rem;">Rp
+                                                    <?php echo number_format($item_produk['harga_produk'], 0, ',', '.'); ?></span>
+                                                <span class="cart-item-price">Rp
+                                                    <?php echo number_format($harga_diskon, 0, ',', '.'); ?></span>
+                                            </p>
+                                        <?php else: ?>
+                                            <p class="mb-0 cart-item-price">Rp
+                                                <?php echo number_format($item_produk['harga_produk'], 0, ',', '.'); ?>
+                                            </p>
+                                        <?php endif; ?>
                                     </div>
                                     <div class="text-muted">
                                         Qty: <?php echo $item_produk['jumlah']; ?>

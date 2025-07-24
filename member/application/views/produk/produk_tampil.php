@@ -30,6 +30,19 @@
         font-weight: 700;
         color: var(--green-dark);
     }
+
+    .price-original {
+        text-decoration: line-through;
+        color: #dc3545;
+        font-size: 0.9rem;
+        font-weight: normal;
+        margin-right: 8px;
+    }
+
+    .price-discount {
+        color: var(--green-dark);
+        font-weight: 700;
+    }
 </style>
 
 <main class="container py-5">
@@ -46,7 +59,17 @@
                             alt="<?php echo $k["nama_produk"]; ?>" loading="lazy">
                         <div class="card-body p-3">
                             <h3 class="card-title"><?php echo $k["nama_produk"]; ?></h3>
-                            <p class="card-price">Rp. <?php echo number_format($k["harga_produk"], 0, ',', '.'); ?></p>
+                            <div class="card-price">
+                                <?php if (isset($k["diskon"]) && $k["diskon"] > 0): ?>
+                                    <?php $harga_diskon = $k["harga_produk"] - ($k["harga_produk"] * $k["diskon"] / 100); ?>
+                                    <span class="price-original">Rp.
+                                        <?php echo number_format($k["harga_produk"], 0, ',', '.'); ?></span>
+                                    <span class="price-discount">Rp.
+                                        <?php echo number_format($harga_diskon, 0, ',', '.'); ?></span>
+                                <?php else: ?>
+                                    Rp. <?php echo number_format($k["harga_produk"], 0, ',', '.'); ?>
+                                <?php endif; ?>
+                            </div>
                         </div>
                     </div>
                 </a>

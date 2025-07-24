@@ -50,8 +50,17 @@
                                                 <span><?php echo $v["nama_produk"]; ?></span>
                                             </div>
                                         </td>
-                                        <td class="align-middle">Rp.
-                                            <?php echo number_format($v["harga_produk"], 0, ',', '.') ?>
+                                        <td class="align-middle">
+                                            <?php if (isset($v["diskon"]) && $v["diskon"] > 0): ?>
+                                                <?php $harga_diskon = $v["harga_produk"] - ($v["harga_produk"] * $v["diskon"] / 100); ?>
+                                                <span
+                                                    style="text-decoration: line-through; color: #dc3545; font-size: 0.9rem;">Rp.
+                                                    <?php echo number_format($v["harga_produk"], 0, ',', '.') ?></span><br>
+                                                <span>Rp. <?php echo number_format($harga_diskon, 0, ',', '.') ?></span>
+                                                <span class="badge bg-danger">-<?php echo $v["diskon"]; ?>%</span>
+                                            <?php else: ?>
+                                                Rp. <?php echo number_format($v["harga_produk"], 0, ',', '.') ?>
+                                            <?php endif; ?>
                                         </td>
                                         <td class="align-middle">
                                             <?php echo number_format($v["berat_produk"], 0, ',', '.') ?> gr

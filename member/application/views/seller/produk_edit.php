@@ -32,6 +32,17 @@
                                 <div class="text-danger small mt-1"><?php echo form_error("harga_produk"); ?></div>
                             </div>
                             <div class="col-md-6 mb-3">
+                                <label class="form-label">Diskon</label>
+                                <div class="input-group">
+                                    <input type="number" name="diskon" class="form-control" min="0" max="100"
+                                        value="<?php echo set_value("diskon", isset($produk["diskon"]) ? $produk["diskon"] : 0); ?>">
+                                    <span class="input-group-text">%</span>
+                                </div>
+                                <div class="text-danger small mt-1"><?php echo form_error("diskon"); ?></div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
                                 <label class="form-label">Berat Produk</label>
                                 <div class="input-group">
                                     <input type="number" name="berat_produk" class="form-control"
