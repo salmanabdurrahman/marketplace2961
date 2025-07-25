@@ -14,6 +14,8 @@
 	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 	<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@0,200..800;1,200..800&display=swap"
 		rel="stylesheet">
+	<!-- jQuery CDN -->
+	<script src="https://code.jquery.com/jquery-3.7.1.js"></script>
 	<!-- Custom CSS -->
 	<style>
 		:root {

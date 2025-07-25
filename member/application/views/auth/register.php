@@ -37,23 +37,31 @@
                             <div class="text-danger small mt-1"><?php echo form_error("wa_member"); ?></div>
                         </div>
                         <div class="mb-3">
-                            <label for="alamat" class="form-label">Alamat</label>
-                            <textarea name="alamat_member" id="alamat_member" class="form-control"
-                                rows="2"><?php echo set_value("alamat_member"); ?></textarea>
-                            <div class="text-danger small mt-1"><?php echo form_error("alamat_member"); ?></div>
+                            <label for="search_lokasi" class="form-label">Cari Kecamatan / Kota</label>
+                            <div class="input-group">
+                                <input type="text" class="form-control" id="search_lokasi"
+                                    placeholder="Contoh: Sleman, Jakarta Pusat, dll.">
+                                <button type="button" class="btn btn-primary" id="btn-search-lokasi">
+                                    <span id="search-icon"><i class="bi bi-search"></i></span>
+                                    <span id="loading-spinner" class="spinner-border spinner-border-sm d-none"
+                                        role="status" aria-hidden="true"></span>
+                                </button>
+                            </div>
                         </div>
                         <div class="mb-3">
-                            <label for="city_id" class="form-label">Kota/Kabupaten</label>
-                            <select name="city_id" id="city_id" class="form-select">
-                                <option value="" disabled selected>Pilih Kota/Kabupaten</option>
-                                <?php foreach ($distrik as $key => $value): ?>
-                                    <option value="<?php echo $value["city_id"]; ?>" <?php echo set_select("city_id", $value["city_id"]); ?>>
-                                        <?php echo $value["type"]; ?>     <?php echo $value["city_name"]; ?>
-                                    </option>
-                                <?php endforeach; ?>
+                            <label for="kode_distrik_member" class="form-label">Pilih Lokasi</label>
+                            <select name="kode_distrik_member" id="kode_distrik_member" class="form-select" disabled>
+                                <option value="">Cari lokasi terlebih dahulu</option>
                             </select>
-                            <div class="text-danger small mt-1"><?php echo form_error("city_id"); ?></div>
+                            <div class="text-danger small mt-1"><?php echo form_error("kode_distrik_member"); ?></div>
                         </div>
+                        <div class="mb-3">
+                            <label for="alamat_member" class="form-label">Detail Alamat</label>
+                            <textarea name="alamat_member" id="alamat_member" class="form-control" rows="2"
+                                placeholder="Contoh: Jl. Merdeka No. 12, RT 03/RW 05"><?php echo set_value("alamat_member"); ?></textarea>
+                            <div class="text-danger small mt-1"><?php echo form_error("alamat_member"); ?></div>
+                        </div>
+                        <input type="hidden" name="nama_distrik_member" id="nama_distrik_member">
                         <div class="mb-3">
                             <label for="password" class="form-label">Password</label>
                             <input type="password" class="form-control" id="password" name="password_member"
@@ -66,10 +74,142 @@
                     </form>
                     <div class="text-center mt-4">
                         <small>Sudah punya akun? <a href="<?php echo base_url('login'); ?>"
-                                style="color: var(--green-accent);" class="fw-semibold">Login di sini</a></small>
+                                style="color: let(--green-accent);" class="fw-semibold">Login di sini</a></small>
                     </div>
                 </div>
             </div>
         </div>
     </div>
 </main>
+
+<script>
+    $(document).ready(function () {
+        function toggleLoading(isLoading) {
+            if (isLoading) {
+                $('#search-icon').addClass('d-none');
+                $('#loading-spinner').removeClass('d-none');
+                $('#btn-search-lokasi').prop('disabled', true);
+            } else {
+                $('#search-icon').removeClass('d-none');
+                $('#loading-spinner').addClass('d-none');
+                $('#btn-search-lokasi').prop('disabled', false);
+            }
+        }
+
+        function handleSearch() {
+            let keyword = $('#search_lokasi').val();
+            if (keyword.length < 3) {
+                alert('Masukkan minimal 3 huruf untuk pencarian.');
+                return;
+            }
+
+            toggleLoading(true);
+            $('#kode_distrik_member').html('<option>Mencari...</option>').prop('disabled', true);
+
+            $.ajax({
+                url: "<?php echo base_url('register/cari_lokasi_ajax'); ?>",
+                method: "POST",
+                data: { keyword: keyword },
+                dataType: "json",
+                success: function (response) {
+                    if (response.data && response.data.length > 0) {
+                        let options = '<option value="" selected disabled>-- Hasil Ditemukan --</option>';
+                        $.each(response.data, function (key, value) {
+                            let displayName = value.subdistrict_name + ', ' + value.district_name + ', ' + value.city_name + ', ' + value.province_name;
+                            options += '<option value="' + value.id + '" data-nama="' + displayName + '">' + displayName + '</option>';
+                        });
+                        $('#kode_distrik_member').html(options).prop('disabled', false);
+                    } else {
+                        $('#kode_distrik_member').html('<option>Lokasi tidak ditemukan</option>').prop('disabled', true);
+                    }
+                },
+                error: function (jqXHR) {
+                    let errorMessage = jqXHR.responseJSON ? jqXHR.responseJSON.message : 'Gagal terhubung ke server.';
+                    $('#kode_distrik_member').html('<option>' + errorMessage + '</option>').prop('disabled', true);
+                },
+                complete: function () {
+                    toggleLoading(false);
+                }
+            });
+        }
+
+        $('#btn-search-lokasi').click(handleSearch);
+
+        $('#search_lokasi').on('keypress', function (e) {
+            if (e.which === 13) {
+                e.preventDefault();
+                handleSearch();
+            }
+        });
+
+        $('#kode_distrik_member').change(function () {
+            let namaLengkap = $(this).find('option:selected').data('nama');
+            $('#nama_distrik_member').val(namaLengkap);
+        });
+    });
+
+    function toggleLoading(isLoading) {
+        if (isLoading) {
+            $('#search-icon').addClass('d-none');
+            $('#loading-spinner').removeClass('d-none');
+            $('#btn-search-lokasi').prop('disabled', true);
+        } else {
+            $('#search-icon').removeClass('d-none');
+            $('#loading-spinner').addClass('d-none');
+            $('#btn-search-lokasi').prop('disabled', false);
+        }
+    }
+
+    function handleSearch() {
+        let keyword = $('#search_lokasi').val();
+        if (keyword.length < 3) {
+            alert('Masukkan minimal 3 huruf untuk pencarian.');
+            return;
+        }
+
+        toggleLoading(true);
+        $('#kode_distrik_member').html('<option>Mencari...</option>').prop('disabled', true);
+
+        $.ajax({
+            url: "<?php echo base_url('register/cari_lokasi_ajax'); ?>",
+            method: "POST",
+            data: { keyword: keyword },
+            dataType: "json",
+            success: function (response) {
+                if (response.data && response.data.length > 0) {
+                    let options = '<option value="" selected disabled>Silahkan Pilih Kota/Kabupaten</option>';
+                    $.each(response.data, function (key, value) {
+                        let displayName = value.subdistrict_name + ', ' + value.district_name + ', ' + value.city_name + ', ' + value.province_name;
+                        options += '<option value="' + value.id + '" data-nama="' + displayName + '">' + displayName + '</option>';
+                    });
+                    $('#kode_distrik_member').html(options).prop('disabled', false);
+                } else {
+                    $('#kode_distrik_member').html('<option>Lokasi tidak ditemukan</option>').prop('disabled', true);
+                }
+            },
+            error: function (jqXHR) {
+                let errorMessage = jqXHR.responseJSON ? jqXHR.responseJSON.message : 'Gagal terhubung ke server.';
+                $('#kode_distrik_member').html('<option>' + errorMessage + '</option>').prop('disabled', true);
+            },
+            complete: function () {
+                toggleLoading(false);
+            }
+        });
+    }
+
+    $('#btn-search-lokasi').click(handleSearch);
+
+    $('#search_lokasi').on('keypress', function (e) {
+        if (e.which === 13) {
+            e.preventDefault();
+            handleSearch();
+        }
+    });
+
+    $('#kode_distrik_member').change(function () {
+        let namaLengkap = $(this).find('option:selected').data('nama');
+        let kodeDistrik = $(this).val();
+        $('#nama_distrik_member').val(namaLengkap);
+        $('#kode_distrik_member').val(kodeDistrik);
+    });
+</script>

@@ -23,7 +23,8 @@ class Register extends CI_Controller
         $this->form_validation->set_rules("nama_member", "Nama", "required");
         $this->form_validation->set_rules("wa_member", "WhatsApp", "required");
         $this->form_validation->set_rules("alamat_member", "Alamat", "required");
-        $this->form_validation->set_rules("city_id", "Kota/Kabupaten", "required");
+        $this->form_validation->set_rules("kode_distrik_member", "Kota/Kabupaten", "required");
+        $this->form_validation->set_rules("nama_distrik_member", "Kota/Kabupaten", "required");
         $this->form_validation->set_rules("password_member", "Password", "required");
 
         $this->form_validation->set_message("required", "%s harus diisi");
@@ -31,21 +32,14 @@ class Register extends CI_Controller
         $this->form_validation->set_message("valid_email", "%s tidak valid");
 
         if ($this->form_validation->run() == TRUE) {
-            $city_id = $input["city_id"];
-            $distrik = $this->Mongkir->detail_distrik($city_id);
-
-            if (!$distrik) {
-                $this->session->set_flashdata("pesan_error", "Kota/Kabupaten tidak ditemukan");
-                redirect("register");
-            }
 
             $data = [
                 "email_member" => $input["email_member"],
                 "nama_member" => $input["nama_member"],
                 "wa_member" => $input["wa_member"],
                 "alamat_member" => $input["alamat_member"],
-                "kode_distrik_member" => $input["city_id"],
-                "nama_distrik_member" => $distrik["type"] . " " . $distrik["city_name"] . " (" . $distrik["province"] . ")",
+                "kode_distrik_member" => $input["kode_distrik_member"],
+                "nama_distrik_member" => $input["nama_distrik_member"],
                 "password_member" => sha1($input["password_member"])
             ];
 
@@ -59,5 +53,25 @@ class Register extends CI_Controller
         $this->load->view("layout/header");
         $this->load->view("auth/register", $data);
         $this->load->view("layout/footer");
+    }
+
+    public function cari_lokasi_ajax()
+    {
+        $this->output->set_content_type('application/json');
+        $keyword = $this->input->post('keyword');
+
+        if (empty($keyword)) {
+            $this->output->set_status_header(400)->set_output(json_encode(['message' => 'Kata kunci tidak boleh kosong.']));
+            return;
+        }
+
+        $response = $this->Mongkir->cari_lokasi($keyword);
+
+        if ($response['error']) {
+            $this->output->set_status_header(400);
+            echo json_encode(['message' => $response['message']]);
+        } else {
+            echo json_encode(['data' => $response['data']]);
+        }
     }
 }
