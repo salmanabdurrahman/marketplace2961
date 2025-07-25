@@ -113,7 +113,7 @@
                 dataType: "json",
                 success: function (response) {
                     if (response.data && response.data.length > 0) {
-                        let options = '<option value="" selected disabled>-- Hasil Ditemukan --</option>';
+                        let options = '<option value="" selected disabled>Silahkan Pilih Kota/Kabupaten</option>';
                         $.each(response.data, function (key, value) {
                             let displayName = value.subdistrict_name + ', ' + value.district_name + ', ' + value.city_name + ', ' + value.province_name;
                             options += '<option value="' + value.id + '" data-nama="' + displayName + '">' + displayName + '</option>';
@@ -144,72 +144,9 @@
 
         $('#kode_distrik_member').change(function () {
             let namaLengkap = $(this).find('option:selected').data('nama');
+            let kodeDistrik = $(this).val();
             $('#nama_distrik_member').val(namaLengkap);
+            $('#kode_distrik_member').val(kodeDistrik);
         });
-    });
-
-    function toggleLoading(isLoading) {
-        if (isLoading) {
-            $('#search-icon').addClass('d-none');
-            $('#loading-spinner').removeClass('d-none');
-            $('#btn-search-lokasi').prop('disabled', true);
-        } else {
-            $('#search-icon').removeClass('d-none');
-            $('#loading-spinner').addClass('d-none');
-            $('#btn-search-lokasi').prop('disabled', false);
-        }
-    }
-
-    function handleSearch() {
-        let keyword = $('#search_lokasi').val();
-        if (keyword.length < 3) {
-            alert('Masukkan minimal 3 huruf untuk pencarian.');
-            return;
-        }
-
-        toggleLoading(true);
-        $('#kode_distrik_member').html('<option>Mencari...</option>').prop('disabled', true);
-
-        $.ajax({
-            url: "<?php echo base_url('register/cari_lokasi_ajax'); ?>",
-            method: "POST",
-            data: { keyword: keyword },
-            dataType: "json",
-            success: function (response) {
-                if (response.data && response.data.length > 0) {
-                    let options = '<option value="" selected disabled>Silahkan Pilih Kota/Kabupaten</option>';
-                    $.each(response.data, function (key, value) {
-                        let displayName = value.subdistrict_name + ', ' + value.district_name + ', ' + value.city_name + ', ' + value.province_name;
-                        options += '<option value="' + value.id + '" data-nama="' + displayName + '">' + displayName + '</option>';
-                    });
-                    $('#kode_distrik_member').html(options).prop('disabled', false);
-                } else {
-                    $('#kode_distrik_member').html('<option>Lokasi tidak ditemukan</option>').prop('disabled', true);
-                }
-            },
-            error: function (jqXHR) {
-                let errorMessage = jqXHR.responseJSON ? jqXHR.responseJSON.message : 'Gagal terhubung ke server.';
-                $('#kode_distrik_member').html('<option>' + errorMessage + '</option>').prop('disabled', true);
-            },
-            complete: function () {
-                toggleLoading(false);
-            }
-        });
-    }
-
-    $('#btn-search-lokasi').click(handleSearch);
-
-    $('#search_lokasi').on('keypress', function (e) {
-        if (e.which === 13) {
-            e.preventDefault();
-            handleSearch();
-        }
-    });
-
-    $('#kode_distrik_member').change(function () {
-        let namaLengkap = $(this).find('option:selected').data('nama');
-        let kodeDistrik = $(this).val();
-        $('#nama_distrik_member').val(namaLengkap);
-        $('#kode_distrik_member').val(kodeDistrik);
     });
 </script>

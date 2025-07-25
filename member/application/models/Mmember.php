@@ -95,6 +95,6 @@ class Mmember extends CI_Model
         $this->session->set_userdata("kode_distrik_member", $input["kode_distrik_member"]);
 
         $this->session->set_flashdata("pesan_sukses", "Anda berhasil mengubah data akun");
-        redirect("/");
+        redirect("/akun");
     }
 }
