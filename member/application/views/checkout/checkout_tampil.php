@@ -50,12 +50,15 @@
                 <div class="card border-0 shadow-sm">
                     <div class="card-body p-4">
                         <h5 class="mb-3">Opsi Pengiriman</h5>
-                        <select name="ongkir" id="ongkir" class="form-select" required>
-                            <option value="" hidden selected>Pilih Jasa Pengiriman</option>
-                            <?php foreach ($biaya[0]['costs'] as $key => $value): ?>
-                                <option value="<?php echo $key; ?>" data-cost="<?php echo $value['cost'][0]['value']; ?>">
-                                    <?php echo $value['description']; ?> (<?php echo $value['service']; ?>) - Rp.
-                                    <?php echo number_format($value['cost'][0]['value'], 0, ',', '.'); ?>
+                        <select name="ongkir" id="ongkirSelect" class="form-select" required <?php if (empty($biaya))
+                            echo 'disabled'; ?>>
+                            <option value="" hidden selected>
+                                <?php echo empty($biaya) ? 'Opsi pengiriman tidak tersedia' : 'Pilih Jasa Pengiriman'; ?>
+                            </option>
+                            <?php foreach ($biaya as $key => $opsi): ?>
+                                <option value='<?php echo json_encode($opsi); ?>'>
+                                    <?php echo $opsi['name']; ?> - <?php echo $opsi['service']; ?> (Rp.
+                                    <?php echo number_format($opsi['cost'], 0, ',', '.'); ?>)
                                 </option>
                             <?php endforeach; ?>
                         </select>
@@ -140,14 +143,18 @@
 
 <script>
     document.addEventListener('DOMContentLoaded', function () {
-        const ongkirSelect = document.getElementById('ongkir');
+        const ongkirSelect = document.getElementById('ongkirSelect');
         const ongkirText = document.getElementById('ongkirText');
         const totalText = document.getElementById('totalText');
         const subtotal = <?php echo $sub_total; ?>;
 
         ongkirSelect.addEventListener('change', function () {
             const selectedOption = this.options[this.selectedIndex];
-            const cost = parseInt(selectedOption.getAttribute('data-cost')) || 0;
+
+            if (!selectedOption.value) return;
+
+            const ongkirData = JSON.parse(selectedOption.value);
+            const cost = ongkirData.cost || 0;
 
             const formatter = new Intl.NumberFormat('id-ID', { style: 'currency', currency: 'IDR', minimumFractionDigits: 0 });
 

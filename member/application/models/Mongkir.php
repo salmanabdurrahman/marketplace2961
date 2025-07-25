@@ -126,40 +126,48 @@ class Mongkir extends CI_Model
         }
     }
 
-    public function cek_biaya_ongkir($origin, $destination, $weight, $courier = 'jne')
+    public function cek_biaya_ongkir($origin, $destination, $weight, $courier = 'jne:sicepat:jnt:ninja:tiki:lion:anteraja')
     {
-        $curl = curl_init();
+        if (empty($origin) || empty($destination)) {
+            return ['error' => true, 'message' => 'Origin atau Destination kosong'];
+        }
 
+        $data_to_post = [
+            'origin' => (string) $origin,
+            'destination' => (string) $destination,
+            'weight' => (int) $weight,
+            'courier' => (string) $courier,
+            'price' => 'lowest'
+        ];
+
+        $curl = curl_init();
         curl_setopt_array($curl, array(
-            CURLOPT_URL => "https://api.rajaongkir.com/starter/cost",
+            CURLOPT_URL => "{$this->base_url}/calculate/domestic-cost",
             CURLOPT_RETURNTRANSFER => true,
-            CURLOPT_ENCODING => "",
-            CURLOPT_MAXREDIRS => 10,
-            CURLOPT_TIMEOUT => 30,
-            CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
             CURLOPT_CUSTOMREQUEST => "POST",
-            CURLOPT_POSTFIELDS => "origin=$origin&destination=$destination&weight=$weight&courier=$courier",
+            CURLOPT_POSTFIELDS => http_build_query($data_to_post),
             CURLOPT_HTTPHEADER => array(
-                "content-type: application/x-www-form-urlencoded",
-                "key: " . $_ENV['RAJA_ONGKIR_API_KEY']
+                "accept: application/json",
+                "key: {$this->api_key}"
             ),
+            CURLOPT_TIMEOUT => 30,
         ));
 
         $response = curl_exec($curl);
         $err = curl_error($curl);
-
         curl_close($curl);
 
         if ($err) {
-            echo "cURL Error #:" . $err;
-        } else {
-            $result = json_decode($response, true);
+            return ['error' => true, 'message' => 'Koneksi ke API Gagal: ' . $err];
+        }
 
-            if (isset($result['rajaongkir']['results'])) {
-                return $result['rajaongkir']['results'];
-            } else {
-                return [];
-            }
+        $result = json_decode($response, true);
+
+        if (isset($result['meta']['status']) && $result['meta']['status'] === 'success' && isset($result['data'])) {
+            return ['error' => false, 'data' => $result['data']];
+        } else {
+            log_message('error', "RajaOngkir Cost API Response Error: " . $response);
+            return ['error' => true, 'message' => $result['meta']['message'] ?? 'Gagal menghitung ongkir.'];
         }
     }
 }

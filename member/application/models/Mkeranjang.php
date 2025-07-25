@@ -90,7 +90,7 @@ class Mkeranjang extends CI_Model
         return $this->db->get("keranjang")->result_array();
     }
 
-    public function checkout($keranjang, $id_member_jual, $id_member_beli, $nama_ekspedisi, $ongkir_terpilih)
+    public function checkout($keranjang, $id_member_jual, $id_member_beli, $ongkir_terpilih)
     {
         $member_jual = $this->Mmember->detail($id_member_jual);
         $member_beli = $this->Mmember->detail($id_member_beli);
@@ -103,37 +103,37 @@ class Mkeranjang extends CI_Model
                 $diskon = $produk["diskon"] ?? 0;
                 $harga_asli = $produk["harga_produk"];
                 $harga_diskon = $diskon > 0 ? $harga_asli - ($harga_asli * $diskon / 100) : $harga_asli;
-                
+
                 $total_belanja += $harga_diskon * $item["jumlah"];
                 $total_berat += $produk["berat_produk"] * $item["jumlah"];
             }
         }
 
-        $data = [
+        $data_transaksi = [
             "kode_transaksi" => date("YmdHis") . rand(1111, 9999),
             "id_member_beli" => $id_member_beli,
             "id_member_jual" => $id_member_jual,
             "tanggal_transaksi" => date("Y-m-d H:i:s"),
             "belanja_transaksi" => $total_belanja,
             "status_transaksi" => "pesan",
-            "ongkir_transaksi" => $ongkir_terpilih["cost"][0]["value"],
-            "total_transaksi" => $total_belanja + $ongkir_terpilih["cost"][0]["value"],
-            "bayar_transaksi" => $total_belanja + $ongkir_terpilih["cost"][0]["value"],
-            "distrik_pengirim" => $member_jual["kode_distrik_member"],
+            "ongkir_transaksi" => $ongkir_terpilih["cost"],
+            "total_transaksi" => $total_belanja + $ongkir_terpilih["cost"],
+            "bayar_transaksi" => $total_belanja + $ongkir_terpilih["cost"],
+            "distrik_pengirim" => $member_jual["nama_distrik_member"],
             "nama_pengirim" => $member_jual["nama_member"],
             "wa_pengirim" => $member_jual["wa_member"],
             "alamat_pengirim" => $member_jual["alamat_member"],
-            "distrik_penerima" => $member_beli["kode_distrik_member"],
+            "distrik_penerima" => $member_beli["nama_distrik_member"],
             "nama_penerima" => $member_beli["nama_member"],
             "wa_penerima" => $member_beli["wa_member"],
             "alamat_penerima" => $member_beli["alamat_member"],
-            "nama_ekspedisi" => $nama_ekspedisi,
+            "nama_ekspedisi" => $ongkir_terpilih["name"],
             "layanan_ekspedisi" => $ongkir_terpilih["description"],
-            "estimasi_ekspedisi" => $ongkir_terpilih["cost"][0]["value"],
+            "estimasi_ekspedisi" => $ongkir_terpilih["etd"],
             "berat_ekspedisi" => $total_berat,
         ];
 
-        $this->db->insert("transaksi", $data);
+        $this->db->insert("transaksi", $data_transaksi);
         $id_transaksi = $this->db->insert_id();
 
         // Simpan detail transaksi
@@ -171,7 +171,9 @@ class Mkeranjang extends CI_Model
 
     public function jumlah_keranjang($id_member)
     {
+        $this->db->select_sum('jumlah');
         $this->db->where('id_member_beli', $id_member);
-        return $this->db->count_all_results('keranjang');
+        $result = $this->db->get('keranjang')->row();
+        return $result && $result->jumlah ? (int) $result->jumlah : 0;
     }
 }

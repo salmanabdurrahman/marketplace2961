@@ -44,9 +44,12 @@ class Keranjang extends CI_Controller
             $this->session->set_flashdata("pesan_error", "Keranjang Anda kosong");
             redirect("keranjang");
         }
-
         if (empty($data["member_jual"]) || empty($data["member_beli"])) {
             $this->session->set_flashdata("pesan_error", "Data member tidak ditemukan");
+            redirect("keranjang");
+        }
+        if (empty($data["member_jual"]["kode_distrik_member"]) || empty($data["member_beli"]["kode_distrik_member"])) {
+            $this->session->set_flashdata("pesan_error", "Alamat pengirim atau penerima tidak lengkap. Silakan perbarui profil.");
             redirect("keranjang");
         }
 
@@ -58,25 +61,34 @@ class Keranjang extends CI_Controller
             }
         }
 
-        $data["biaya"] = $this->Mongkir->cek_biaya_ongkir(
+        $response_ongkir = $this->Mongkir->cek_biaya_ongkir(
             $data["member_jual"]["kode_distrik_member"],
             $data["member_beli"]["kode_distrik_member"],
             $total_berat
         );
 
-        $this->form_validation->set_rules("ongkir", "Ongkir", "required", [
-            "required" => "Pilih jasa pengiriman terlebih dahulu"
-        ]);
+        $data['biaya'] = [];
+        if ($response_ongkir['error']) {
+            $this->session->set_flashdata("pesan_error", "API Ongkir Error: " . $response_ongkir['message']);
+        } else {
+            $data['biaya'] = $response_ongkir['data'];
+        }
+
+        $this->form_validation->set_rules("ongkir", "Ongkir", "required", ["required" => "Pilih jasa pengiriman terlebih dahulu"]);
 
         if ($this->form_validation->run() == TRUE) {
-            $ongkir = $this->input->post("ongkir");
-            $ongkir_terpilih = $data["biaya"][0]["costs"][$ongkir];
+            $ongkir_json = $this->input->post("ongkir");
+            $ongkir_terpilih = json_decode($ongkir_json, true);
+
+            if (json_last_error() !== JSON_ERROR_NONE) {
+                $this->session->set_flashdata("pesan_error", "Data ongkir tidak valid.");
+                redirect("keranjang/checkout/" . $id_member_jual);
+            }
 
             $this->Mkeranjang->checkout(
                 $data["keranjang"],
                 $id_member_jual,
                 $this->session->userdata("id_member"),
-                $data['biaya'][0]['name'],
                 $ongkir_terpilih
             );
         }
